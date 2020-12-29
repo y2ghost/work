@@ -1,0 +1,40 @@
+plugins {
+    id "java"
+    id "org.springframework.boot"
+    id "io.spring.dependency-management"
+}
+
+repositories {
+    maven { url "https://maven.aliyun.com/repository/public/" }
+}
+
+configurations {
+    implementation.exclude module: "spring-boot-starter-tomcat"
+}
+
+dependencies {
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+    implementation "org.springframework.boot:spring-boot-starter-undertow"
+    implementation ("org.springframework.boot:spring-boot-starter-web") {
+        exclude module: "spring-boot-starter-tomcat"
+    }
+
+    implementation "org.mariadb.jdbc:mariadb-java-client"
+    testImplementation("org.springframework.boot:spring-boot-starter-test") {
+        exclude group: "org.junit.vintage", module: "junit-vintage-engine"
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+group = "study.ywork"
+version = "1.0.0"
+sourceCompatibility = "11"
+targetCompatibility = "11"
+

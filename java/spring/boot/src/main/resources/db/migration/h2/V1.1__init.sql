@@ -1,0 +1,16 @@
+DROP TABLE IF EXISTS users;
+CREATE TABLE users (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) DEFAULT NULL,
+    PRIMARY KEY (id)
+);
+
+DROP TABLE IF EXISTS todo;
+CREATE TABLE todo (
+    id VARCHAR(36) NOT NULL PRIMARY KEY,
+    description VARCHAR(255) NOT NULL,
+    created TIMESTAMP,
+    modified TIMESTAMP,
+    completed BOOLEAN
+);

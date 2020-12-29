@@ -1,0 +1,28 @@
+@startuml
+skinparam handwritten true
+skinparam backgroundColor #EEEBDC
+title 群创建流程
+
+control 协作平台服务 as server
+control NC消息服务 as nc
+control 会议室JOB as job
+database db
+boundary 第三方IM服务 as im
+
+[->server: 创建事件
+activate server
+[->server: 重开事件
+server->nc: 发送消息: 提供ticket_id
+server<--nc: 返回
+[<--server: 其他业务逻辑
+deactivate server
+
+nc->job: 事件创建消息
+job->im: 调用第三方群创建接口
+job<--im: 返回结果(IM群ID值)
+job->db: 根据ticket_id查询ticket_request表中事件详情
+job<--db: 返回结果
+job->db: 插入记录[事件部分数据、IM群ID、状态inuse](操作meeting表)
+job<--db: 返回结果
+
+@enduml
