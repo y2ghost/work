@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import study.ywork.security.domain.OrderItem;
 
@@ -21,6 +22,8 @@ public class ShoppingCartService {
 
     // JSR-250风格，和@Secured注解功能相同
     @RolesAllowed("ROLE_ADMIN")
+    // 此处重复，目的用于演示：@PreAuthorize注解的用法
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public List<OrderItem> getOrderList() {
         return orderItems;
     }

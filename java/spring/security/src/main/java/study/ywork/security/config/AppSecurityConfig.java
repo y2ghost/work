@@ -13,7 +13,7 @@ import study.ywork.security.service.AppUserService;
 // WEB安全配置示例
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true)
+@EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
 public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     @SuppressWarnings("unused")
@@ -70,6 +70,10 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
             .permitAll()
             .and()
             .exceptionHandling()
-            .accessDeniedPage("/order/noaccess"); // 主要是针对订单示例错误处理
+            .accessDeniedPage("/order/noaccess") // 主要是针对订单示例错误处理
+            .and()
+            .rememberMe() // 使用RememberMeService服务
+            .rememberMeCookieName("app-known-me")
+            .tokenValiditySeconds(600);
     }
 }

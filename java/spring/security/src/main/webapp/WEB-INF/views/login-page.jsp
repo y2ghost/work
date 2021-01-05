@@ -20,7 +20,8 @@
     %>
     <p><label for="username">用户</label><input type="text" id="username" name="username" /></p>
     <p><label for="password">密码</label><input type="password" id="password" name="password" /></p>
-    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+    <p><label for="checkbox">记住</label><input type="checkbox" id="checkbox" name="remember-me" /></p>
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     <button type="submit">登录</button>
   </form>
 </body>
