@@ -4,13 +4,14 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCallbackHandler;
-import org.springframework.stereotype.Component;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
-@Component
+/*
+ * 如果使用H2数据库的时候，则可以添加注解@Component，以便打印SQL语句执行信息
+ */
 public class SqlListener {
     private DataSource ds;
 

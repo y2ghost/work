@@ -3,16 +3,20 @@ package study.ywork.security.config;
 import javax.sql.DataSource;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import study.ywork.security.service.AppUserService;
 
-// 基本的内存存储用户密码数据示例
+// WEB安全配置示例
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true)
 public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    @SuppressWarnings("unused")
     private DataSource ds;
 
     public AppSecurityConfig(DataSource ds) {
@@ -22,16 +26,26 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(AuthenticationManagerBuilder builder) throws Exception {
-        builder.jdbcAuthentication().passwordEncoder(encoder).dataSource(ds);
-//        builder.inMemoryAuthentication()
-//            .passwordEncoder(encoder)
-//            .withUser("yy")
-//            .password(encoder.encode("123456"))
-//            .roles("ADMIN")
-//            .and()
-//            .withUser("tt")
-//            .password(encoder.encode("123456"))
-//            .roles("USER");
+        // 认证数据源可以来自数据库，示例代码如下:
+        // builder.jdbcAuthentication().passwordEncoder(encoder).dataSource(ds)
+        // AuthenticationManagerBuilder类的三个方法:
+        // jdbcAuthentication 和 inMemoryAuthentication 以及userDetailsService
+        // 都是设置内部defaultUserDetailsService对象
+        String secret = encoder.encode("123456");
+        builder.inMemoryAuthentication()
+            .passwordEncoder(encoder)
+            .withUser("yy")
+            .password(secret)
+            .roles("ADMIN")
+            .and()
+            .withUser("tt")
+            .password(secret)
+            .roles("USER");
+        // 添加自定义的AuthenticationProvider对象
+        builder.authenticationProvider(new AppAuthenticationProvider());
+        // 会使builder#inMemoryAuthentication方法配置的数据无效
+        // 目的测试自定义的UserDetailsService
+        builder.userDetailsService(new AppUserService());
     }
 
     // 可以自定义HttpSecurity的配置
@@ -53,6 +67,9 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             .logout()
             .logoutSuccessUrl("/my-login?logout")
-            .permitAll();
+            .permitAll()
+            .and()
+            .exceptionHandling()
+            .accessDeniedPage("/order/noaccess"); // 主要是针对订单示例错误处理
     }
 }
