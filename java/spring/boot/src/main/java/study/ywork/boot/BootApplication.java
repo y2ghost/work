@@ -5,6 +5,7 @@ import java.util.Properties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.ConfigurableApplicationContext;
 
 /*
@@ -12,6 +13,7 @@ import org.springframework.context.ConfigurableApplicationContext;
  * 可以自定Banner文本内容，默认文件src/main/resources/banner.txt
  * 也可以关闭Banner显示: app.setBannerMode(Banner.Mode.OFF)
  */
+@ServletComponentScan
 @SpringBootApplication
 public class BootApplication {
     public static void main(String[] args) {
