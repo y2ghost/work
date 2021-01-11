@@ -7,6 +7,8 @@ import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.ConfigurableApplicationContext;
+import study.ywork.boot.component.MyApplicationListener;
+import study.ywork.boot.component.MyProperties;
 
 /*
  * 使用Gradle工具构建，运行程序: gradle bootRun
@@ -25,6 +27,8 @@ public class BootApplication {
         // 按需去掉注释
         // p.setProperty("logging.level.org.springframework", "DEBUG")
         app.setDefaultProperties(p);
+        // 添加监听器
+        app.addListeners(new MyApplicationListener("程序监听器"));
         // 打印获取的客户端自动配置包
         ConfigurableApplicationContext ctx = app.run(args);
         List<String> autoPackages = AutoConfigurationPackages.get(ctx);
@@ -35,5 +39,9 @@ public class BootApplication {
         for (String name : beanNames) {
             System.out.println(name);
         }
+
+        // 显示自定义属性信息
+        MyProperties myProperties = ctx.getBean(MyProperties.class);
+        System.out.println(myProperties);
     }
 }

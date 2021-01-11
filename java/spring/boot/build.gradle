@@ -10,10 +10,12 @@ repositories {
 
 dependencies {
     implementation "org.apache.tomcat.embed:tomcat-embed-jasper"
+    implementation "org.hibernate.validator:hibernate-validator"
     implementation "org.springframework.boot:spring-boot-starter-web"
     implementation "org.springframework.boot:spring-boot-starter-groovy-templates"
     implementation "org.springframework.boot:spring-boot-starter-freemarker"
     implementation "org.springframework.boot:spring-boot-starter-thymeleaf"
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
 
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude group: "org.junit.vintage", module: "junit-vintage-engine"
