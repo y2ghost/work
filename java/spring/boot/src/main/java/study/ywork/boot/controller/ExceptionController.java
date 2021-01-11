@@ -3,6 +3,8 @@ package study.ywork.boot.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import study.ywork.boot.controller.exception.ForbiddenException;
+import study.ywork.boot.controller.exception.NotYetImplemented;
 
 /*
  * 演示错误异常，自定义错误页面显示错误信息
@@ -17,5 +19,15 @@ public class ExceptionController {
     @GetMapping
     public void runtimeException() {
         throw new RuntimeException("伪装错误：打不开文件");
+    }
+
+    @GetMapping("/501")
+    public void notYetImplemented() throws NotYetImplemented {
+        throw new NotYetImplemented("请求未实现");
+    }
+
+    @GetMapping("/403")
+    public void forbiddenException() throws ForbiddenException {
+        throw new ForbiddenException("请求禁止访问");
     }
 }

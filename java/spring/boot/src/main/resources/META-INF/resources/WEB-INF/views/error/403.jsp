@@ -14,7 +14,7 @@ table td {
 </style>
 </head>
 <body>
-  <h1>自定义全局错误页面</h1>
+  <h1>自定义403错误页面</h1>
   <table>
     <tr>
       <td>时间</td>

@@ -29,5 +29,11 @@ public class BootApplication {
         ConfigurableApplicationContext ctx = app.run(args);
         List<String> autoPackages = AutoConfigurationPackages.get(ctx);
         System.out.println("AutoPackage: " + autoPackages);
+
+        // 显示所有注册的bean名称
+        String[] beanNames = ctx.getBeanDefinitionNames();
+        for (String name : beanNames) {
+            System.out.println(name);
+        }
     }
 }
