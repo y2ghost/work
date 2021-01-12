@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Thymeleaf人员视图</title>
+</head>
+<body>
+  <h2>人员</h2>
+  <h3>输入人员信息</h3>
+  <form action="/person" method="post">
+    <pre>
+      名字: <input name="firstName" /> <br />
+      姓氏: <input name="lastName" /><br />
+      地址: <input th:name="address" /><br />
+      <input type="submit" value="保存">
+  </pre>
+  </form>
+  <br>
+  <h3>已保存人员</h3>
+  <table style="width: 100%; text-align: center">
+    <tr>
+      <th>用户ID</th>
+      <th>名字</th>
+      <th>姓氏</th>
+      <th>地址</th>
+    </tr>
+    <tr th:each="person: ${persons}">
+      <td th:text="${person.id}"></td>
+      <td th:text="${person.firstName}"></td>
+      <td th:text="${person.lastName}"></td>
+      <td th:text="${person.address}"></td>
+    </tr>
+  </table>
+</body>
+</html>

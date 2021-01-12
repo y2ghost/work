@@ -55,7 +55,8 @@ public class CustomErrorController implements ErrorController {
             statusCode, exception == null ? "N/A" : exception.getMessage(), errorDetails.toString());
     }
 
-    // 已废弃，简单返回无用值null即可
+    // 接口已废弃该方法，简单返回无用值null即可
+    @Deprecated
     @Override
     public String getErrorPath() {
         return null;

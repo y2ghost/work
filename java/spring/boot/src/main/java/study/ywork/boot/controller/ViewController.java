@@ -27,7 +27,7 @@ public class ViewController {
     @GetMapping("/jsp-view")
     public String jspView(Model model) {
         model.addAttribute("msg", "JAR包下JSP视图的示例");
-        return "myView";
+        return "my-view";
     }
 
     @GetMapping("/bean-view")
@@ -40,19 +40,19 @@ public class ViewController {
     public String ftlView(Model model) {
         model.addAttribute("msg", "FreeMarker视图的示例");
         model.addAttribute("time", LocalTime.now());
-        return "ftlView";
+        return "ftl-view";
     }
 
     @GetMapping("/groovy-view")
     public String groovyView(Model model) {
         model.addAttribute("msg", "Groovy视图的示例");
-        return "groovyView";
+        return "groovy-view";
     }
 
     @GetMapping("/thymeleaf-view")
     public String thymeleafView(Model model) {
         model.addAttribute("msg", "Thymeleaf视图的示例");
         model.addAttribute("time", LocalTime.now());
-        return "thymeleafView";
+        return "thymeleaf-view";
     }
 }
