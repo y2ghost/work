@@ -12,7 +12,7 @@ import org.springframework.http.converter.HttpMessageConverter;
 import study.ywork.boot.component.SimpleServletListener;
 import study.ywork.boot.controller.EchoServlet;
 import study.ywork.boot.converter.EmptyConverter;
-import study.ywork.boot.filter.ShowUrlFilter;
+import study.ywork.boot.filter.PrintUrlFilter;
 
 /*
  * 配置Bean的配置类
@@ -39,9 +39,9 @@ public class BeanConfig {
 
     // 可以通过注解的Bean的方式，添加第三方的servlet, filter, listener等
     @Bean
-    FilterRegistrationBean<ShowUrlFilter> myFilterRegistration() {
-        FilterRegistrationBean<ShowUrlFilter> frb = new FilterRegistrationBean<>();
-        frb.setFilter(new ShowUrlFilter("ExternalFilter"));
+    FilterRegistrationBean<PrintUrlFilter> myFilterRegistration() {
+        FilterRegistrationBean<PrintUrlFilter> frb = new FilterRegistrationBean<>();
+        frb.setFilter(new PrintUrlFilter("ExternalFilter"));
         frb.setUrlPatterns(Arrays.asList("/servlet/echo2"));
         return frb;
     }

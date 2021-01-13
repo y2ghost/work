@@ -10,14 +10,14 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @WebFilter(urlPatterns = "/servlet/echo")
-public class ShowUrlFilter implements Filter {
+public class PrintUrlFilter implements Filter {
     private final String filterName;
 
-    public ShowUrlFilter() {
-        this("ShowUrlFilter");
+    public PrintUrlFilter() {
+        this("PrintUrlFilter");
     }
 
-    public ShowUrlFilter(String filterName) {
+    public PrintUrlFilter(String filterName) {
         this.filterName = filterName;
     }
 
