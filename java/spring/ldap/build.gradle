@@ -1,11 +1,7 @@
 plugins {
     id "java"
-    id "org.springframework.boot" version "2.2.10.RELEASE"
-    id "io.spring.dependency-management" version "1.0.10.RELEASE"
-}
-
-configurations {
-    implementation.exclude module: "spring-boot-starter-tomcat"
+    id "org.springframework.boot"
+    id "io.spring.dependency-management"
 }
 
 repositories {
@@ -15,11 +11,9 @@ repositories {
 dependencies {
     implementation "org.springframework.boot:spring-boot-starter-security"
     implementation "org.springframework.security:spring-security-ldap"
-    implementation "org.springframework.data:spring-data-ldap"
     implementation "org.springframework.boot:spring-boot-starter-thymeleaf"
-    implementation "org.springframework.boot:spring-boot-starter-jetty"
+    implementation "org.springframework.boot:spring-boot-starter-tomcat"
     implementation "org.springframework.boot:spring-boot-starter-web"
-    runtimeOnly "org.springframework.boot:spring-boot-devtools"
 }
 
 tasks.withType(JavaCompile) {
@@ -28,7 +22,7 @@ tasks.withType(JavaCompile) {
 
 group = "study.ywork"
 version = "1.0.0"
-description = "Showcasing Spring security with only LDAP"
+description = "使用ldap作为认证数据库示例"
 sourceCompatibility = "11"
 targetCompatibility = "11"
 
