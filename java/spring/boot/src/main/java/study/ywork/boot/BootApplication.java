@@ -7,6 +7,8 @@ import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import study.ywork.boot.component.MyApplicationListener;
 import study.ywork.boot.component.MyProperties;
 
@@ -17,6 +19,8 @@ import study.ywork.boot.component.MyProperties;
  */
 @ServletComponentScan
 @SpringBootApplication
+@ComponentScan(basePackages = "study.ywork.boot", excludeFilters =
+    @ComponentScan.Filter(type = FilterType.REGEX, pattern = "study.ywork.boot.test.*"))
 public class BootApplication {
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(BootApplication.class);
