@@ -1,0 +1,43 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "cn.hssat.rvscloud",
+      "nativeLanguage": "zh-cn"
+    },
+    "jhipsterVersion": "6.10.4",
+    "applicationType": "monolith",
+    "baseName": "rvscloud",
+    "packageName": "cn.hssat.rvscloud",
+    "packageFolder": "cn/hssat/rvscloud",
+    "serverPort": "8080",
+    "authenticationType": "jwt",
+    "cacheProvider": "ehcache",
+    "enableHibernateCache": true,
+    "websocket": "spring-websocket",
+    "databaseType": "sql",
+    "devDatabaseType": "mariadb",
+    "prodDatabaseType": "mariadb",
+    "searchEngine": false,
+    "messageBroker": false,
+    "serviceDiscoveryType": false,
+    "buildTool": "gradle",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "NjNlZDA5Yjc5ZGU3MmViNmNmYTBiZTk0OTYxMjgxNWUzZWE5ODQ2ZmJhZWJjZjUxYWFlY2FmNWNjNGEwYzQ0ZWExNGE2ZWNhMWI3NWViYWRlMjJjYjUyMWExYjI3YzM3YzdkNjI5YjI0MjlkMzFiMGNkNDM3ZWU2ZWVlMDlhYzQ=",
+    "embeddableLaunchScript": false,
+    "useSass": true,
+    "clientPackageManager": "npm",
+    "clientFramework": "react",
+    "clientTheme": "materia",
+    "clientThemeVariant": "dark",
+    "creationTimestamp": 1593589963385,
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [],
+    "enableTranslation": true,
+    "nativeLanguage": "zh-cn",
+    "languages": ["zh-cn", "en"],
+    "blueprints": []
+  }
+}
