@@ -1,0 +1,20 @@
+" 设置通用选项
+" author: yy
+set nocp
+set number
+set hlsearch
+set autoindent
+set cindent
+set ts=4
+set sw=4
+set bs=indent,eol,start
+set ruler
+set expandtab
+colorscheme murphy
+set showcmd
+syntax on
+filetype on
+filetype plugin on
+set nobackup
+set encoding=utf-8
+

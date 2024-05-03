@@ -1,0 +1,5 @@
+sales_report_xxx.py脚本数据格式示例
+- transaction_id    store           status  transaction_date    plan    contract_type   amount
+- 7fb801a5          Chicago         ACTIVE  2019/4/1            Silver  NEW             14.25
+- 8e8bdb2a          San Francisco   ACTIVE  2019/4/1            Silver  NEW             14.25
+- 239db9b6          Washington DC   ACTIVE  2019/4/1            Silver  NEW             14.25
