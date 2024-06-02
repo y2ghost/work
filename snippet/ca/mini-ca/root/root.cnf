@@ -50,16 +50,16 @@ subjectKeyIdentifier = hash
 authorityKeyIdentifier = keyid:always, issuer
 basicConstraints = critical, CA:TRUE
 keyUsage = critical, digitalSignature, cRLSign, keyCertSign
-crlDistributionPoints = URI:http://crl.tls-experts.no/root_crl.der
+crlDistributionPoints = URI:http://crl.tls.ydoit.dev/root_crl.der
 
 [v3_intermediate_cert]
 subjectKeyIdentifier = hash
 authorityKeyIdentifier = keyid:always, issuer
 basicConstraints = critical, CA:TRUE, pathlen:0
 keyUsage = critical, digitalSignature, cRLSign, keyCertSign
-crlDistributionPoints = URI:http://crl.tls-experts.no/root_crl.der
+crlDistributionPoints = URI:http://crl.tls.ydoit.dev/root_crl.der
 
 [crl_extensions_root_ca]
 authorityKeyIdentifier = keyid:always, issuer
-crlDistributionPoints = URI:http://crl.tls-experts.no/root_crl.der
+crlDistributionPoints = URI:http://crl.tls.ydoit.dev/root_crl.der
 

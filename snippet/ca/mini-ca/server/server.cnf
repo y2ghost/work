@@ -8,7 +8,7 @@ countryName             = NO
 stateOrProvinceName     = Oslo
 localityName            = Oslo
 organizationName        = TLS Experts
-commonName              = internal.tls-experts.no
+commonName              = internal.tls.ydoit.dev
 
 [v3_server_cert]
-subjectAltName = DNS:mirror1.tls-experts.no, DNS:mirror2.tls-experts.no
+subjectAltName = DNS:mirror1.tls.ydoit.dev, DNS:mirror2.tls.ydoit.dev

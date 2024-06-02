@@ -9,11 +9,12 @@ stateOrProvinceName     = Oslo
 localityName            = Oslo
 organizationName        = TLS Experts
 commonName              = Thor Odinson
-emailAddress            = thor@tls-experts.no
+emailAddress            = thor@tls.ydoit.dev
 
 [v3_client_cert]
 subjectAltName = @subject_alt_names
 
 [subject_alt_names]
-email.1 = postmaster@tls-experts.no
-email.2 = hostmaster@tls-experts.no
+email.1 = postmaster@tls.ydoit.dev
+email.2 = hostmaster@tls.ydoit.dev
+

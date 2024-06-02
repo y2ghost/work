@@ -7,4 +7,4 @@ countryName             = NO
 stateOrProvinceName     = Oslo
 localityName            = Oslo
 organizationName        = TLS Experts
-commonName              = server2.tls-experts.no
+commonName              = server2.tls.ydoit.dev

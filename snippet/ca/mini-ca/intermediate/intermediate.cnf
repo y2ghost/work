@@ -61,8 +61,8 @@ basicConstraints = critical, CA:FALSE
 nsCertType = server
 keyUsage = critical, digitalSignature, keyEncipherment
 extendedKeyUsage = serverAuth
-crlDistributionPoints = URI:http://crl.tls-experts.no/intermediate_crl.der
-authorityInfoAccess = OCSP;URI:http://ocsp.tls-experts.no/
+crlDistributionPoints = URI:http://crl.tls.ydoit.dev/intermediate_crl.der
+authorityInfoAccess = OCSP;URI:http://ocsp.tls.ydoit.dev/
 
 [v3_client_cert]
 subjectKeyIdentifier = hash
@@ -71,8 +71,8 @@ basicConstraints = critical, CA:FALSE
 nsCertType = client, email
 keyUsage = critical, nonRepudiation, digitalSignature, keyEncipherment
 extendedKeyUsage = clientAuth, emailProtection
-crlDistributionPoints = URI:http://crl.tls-experts.no/intermediate_crl.der
-authorityInfoAccess = OCSP;URI:http://ocsp.tls-experts.no/
+crlDistributionPoints = URI:http://crl.tls.ydoit.dev/intermediate_crl.der
+authorityInfoAccess = OCSP;URI:http://ocsp.tls.ydoit.dev/
 
 [v3_ocsp_cert]
 subjectKeyIdentifier = hash
@@ -80,11 +80,11 @@ authorityKeyIdentifier = keyid:always, issuer
 basicConstraints = critical, CA:FALSE
 keyUsage = critical, digitalSignature
 extendedKeyUsage = critical, OCSPSigning
-crlDistributionPoints = URI:http://crl.tls-experts.no/intermediate_crl.der
-authorityInfoAccess = OCSP;URI:http://ocsp.tls-experts.no/
+crlDistributionPoints = URI:http://crl.tls.ydoit.dev/intermediate_crl.der
+authorityInfoAccess = OCSP;URI:http://ocsp.tls.ydoit.dev/
 
 [crl_extensions_intermediate_ca]
 authorityKeyIdentifier = keyid:always, issuer
-crlDistributionPoints = URI:http://crl.tls-experts.no/intermediate_crl.der
-authorityInfoAccess = OCSP;URI:http://ocsp.tls-experts.no/
+crlDistributionPoints = URI:http://crl.tls.ydoit.dev/intermediate_crl.der
+authorityInfoAccess = OCSP;URI:http://ocsp.tls.ydoit.dev/
 
