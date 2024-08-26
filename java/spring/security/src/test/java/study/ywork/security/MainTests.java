@@ -3,8 +3,10 @@ package study.ywork.security;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import study.ywork.security.config.WithCustomUser;
@@ -17,11 +19,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class MainTests {
+    @Autowired
     private MockMvc mvc;
-
-    public MainTests(@Autowired MockMvc mvc) {
-        this.mvc = mvc;
-    }
+    @Value("${authorization.key}")
+    private String key;
 
     @Test
     @DisplayName("Test calling /hello endpoint without authentication returns unauthorized.")
@@ -48,7 +49,7 @@ class MainTests {
 
     @Test
     @DisplayName("Test calling /hello endpoint authenticated returns ok.")
-    @WithCustomUser(username = "yy", password = "12345")
+    @WithCustomUser(username = "yx", password = "123456")
     void helloAuthenticated3() throws Exception {
         mvc.perform(get("/hello"))
                 .andExpect(status().isOk());
@@ -57,8 +58,11 @@ class MainTests {
     @Test
     @DisplayName("Test calling /hello endpoint authenticating with valid credentials returns ok.")
     void helloAuthenticatingWithValidUser() throws Exception {
+        var pwdEncoder = new BCryptPasswordEncoder();
+        var password = "123456";
+        System.out.println(pwdEncoder.encode(password));
         mvc.perform(get("/hello")
-                        .with(httpBasic("yy", "12345")))
+                        .with(httpBasic("yjy", password)))
                 .andExpect(status().isOk());
     }
 
@@ -73,6 +77,30 @@ class MainTests {
     @DisplayName("Endpoint /hello-id providing the Request-Id header")
     void testHelloValidRequestIdHeader() throws Exception {
         mvc.perform(get("/hello-id").header("Request-Id", "12345"))
+                .andExpect(status().isOk());
+    }
+
+
+    @Test
+    @DisplayName("Endpoint /hello-key without providing the Authorization header")
+    void testHelloNoAuthorizationHeader() throws Exception {
+        mvc.perform(get("/hello-key"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @DisplayName("Endpoint /hello-key providing a wrong Authorization header")
+    void testHelloUsingInvalidAuthorizationHeader() throws Exception {
+        mvc.perform(get("/hello-key")
+                        .header("Authorization", "12345"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @DisplayName("Endpoint /hello-key providing a valid Authorization header")
+    void testHelloUsingValidAuthorizationHeader() throws Exception {
+        mvc.perform(get("/hello-key")
+                        .header("Authorization", key))
                 .andExpect(status().isOk());
     }
 }

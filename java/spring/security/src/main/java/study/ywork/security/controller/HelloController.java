@@ -14,4 +14,9 @@ public class HelloController {
     public String helloId() {
         return "Hello-id!";
     }
+
+    @GetMapping("/hello-key")
+    public String helloKey() {
+        return "Hello-key!";
+    }
 }

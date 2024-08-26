@@ -1,10 +1,12 @@
 package study.ywork.security.service;
 
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +20,7 @@ public class AppUserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<UserObject> user = users.stream().filter(u -> u.name.equals(username)).findAny();
+        Optional<UserObject> user = users.stream().filter(u -> u.username.equals(username)).findAny();
         if (!user.isPresent()) {
             throw new UsernameNotFoundException("没找到用户: " + username);
         }
@@ -27,18 +29,53 @@ public class AppUserService implements UserDetailsService {
     }
 
     private UserDetails toUserDetails(UserObject userObject) {
-        return User.withUsername(userObject.name).password(userObject.password).roles(userObject.role).build();
+        return userObject;
     }
 
-    private static class UserObject {
-        private String name;
-        private String password;
-        private String role;
+    private static class UserObject implements UserDetails {
+        private final String username;
+        private final String password;
+        private final String authority;
 
-        public UserObject(String name, String password, String role) {
-            this.name = name;
+        public UserObject(String username, String password, String authority) {
+            this.username = username;
             this.password = password;
-            this.role = role;
+            this.authority = authority;
+        }
+
+        @Override
+        public Collection<? extends GrantedAuthority> getAuthorities() {
+            return List.of(() -> authority);
+        }
+
+        @Override
+        public String getPassword() {
+            return password;
+        }
+
+        @Override
+        public String getUsername() {
+            return username;
+        }
+
+        @Override
+        public boolean isAccountNonExpired() {
+            return true;
+        }
+
+        @Override
+        public boolean isAccountNonLocked() {
+            return true;
+        }
+
+        @Override
+        public boolean isCredentialsNonExpired() {
+            return true;
+        }
+
+        @Override
+        public boolean isEnabled() {
+            return true;
         }
     }
 }

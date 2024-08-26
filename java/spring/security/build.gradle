@@ -20,15 +20,14 @@ dependencies {
 }
 
 java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
+    toolchain { languageVersion = JavaLanguageVersion.of(17) }
 }
 
 tasks.withType(JavaCompile).configureEach {
     javaCompiler = javaToolchains.compilerFor {
         languageVersion = JavaLanguageVersion.of(17)
     }
+
     options.encoding = "UTF-8"
 }
 
@@ -38,4 +37,3 @@ tasks.named("test") {
 
 group = "study.ywork"
 version = "1.0"
-
