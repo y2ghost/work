@@ -7,13 +7,20 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import study.ywork.security.config.WithCustomUser;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -33,7 +40,7 @@ class MainTests {
 
     @Test
     @DisplayName("Test calling /hello endpoint authenticated returns ok.")
-    @WithUserDetails("yy")
+    @WithUserDetails("tt")
     void helloAuthenticated() throws Exception {
         mvc.perform(get("/hello"))
                 .andExpect(status().isOk());
@@ -43,7 +50,7 @@ class MainTests {
     @DisplayName("Test calling /hello endpoint authenticated returns ok.")
     void helloAuthenticated2() throws Exception {
         mvc.perform(get("/hello")
-                        .with(user("yy")))
+                        .with(user("test")))
                 .andExpect(status().isOk());
     }
 
@@ -101,6 +108,133 @@ class MainTests {
     void testHelloUsingValidAuthorizationHeader() throws Exception {
         mvc.perform(get("/hello-key")
                         .header("Authorization", key))
+                .andExpect(status().isOk());
+    }
+
+
+    @Test
+    @DisplayName("Test calling /hello endpoint authenticated returns ok.")
+    @WithMockUser(username = "yx")
+    void helloUserAuthenticated() throws Exception {
+        mvc.perform(get("/hello-user"))
+                .andExpect(content().string("Hello, yx!"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("Test calling /ciao endpoint authenticated returns ok.")
+    @WithMockUser(username = "tt")
+    void ciaoAuthenticated() throws Exception {
+        mvc.perform(get("/ciao"))
+                .andExpect(content().string("Ciao, tt!"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("Test calling /hola endpoint authenticated returns ok.")
+    @WithMockUser(username = "tt")
+    void holaAuthenticated() throws Exception {
+        mvc.perform(get("/hola"))
+                .andExpect(content().string("Hola, tt!"))
+                .andExpect(status().isOk());
+    }
+
+
+    @Test
+    @DisplayName("Test calling /hello endpoint without authentication returns unauthorized.")
+    void helloHeaderUnauthenticated() throws Exception {
+        mvc.perform(get("/hello"))
+                .andExpect(header().string("Demo-Error", "Test error"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @DisplayName("Test calling /hello endpoint authenticated returns ok.")
+    @WithMockUser(username = "yy")
+    void helloHeaderAuthenticated() throws Exception {
+        mvc.perform(get("/hello"))
+                .andExpect(content().string("Hello!"))
+                .andExpect(status().isOk());
+    }
+
+
+    @Test
+    @DisplayName("Authenticating with wrong user")
+    void formLoggingInWithWrongUser() throws Exception {
+        mvc.perform(formLogin().user("nouser").password("123456"))
+                .andExpect(header().exists("Demo-Fail-Time"))
+                .andExpect(unauthenticated());
+    }
+
+    @Test
+    @DisplayName("Logging in authenticating with valid user but wrong authority")
+    void formLoggingInWithWrongAuthority() throws Exception {
+        mvc.perform(formLogin().user("test_write").password("123456"))
+                .andExpect(redirectedUrl("/my-error"))
+                .andExpect(status().isFound())
+                .andExpect(authenticated());
+    }
+
+    @Test
+    @DisplayName("Logging in authenticating with valid user and correct authority")
+    void formLoggingInWithCorrectAuthority() throws Exception {
+        mvc.perform(formLogin().user("test_read").password("123456"))
+                .andExpect(redirectedUrl("/home"))
+                .andExpect(status().isFound())
+                .andExpect(authenticated());
+    }
+
+    @Test
+    @DisplayName("A user without privileges can authenticate but is not authorized")
+    @WithUserDetails("yy")
+    void testSuccessfulAuthentication() throws Exception {
+        mvc.perform(get("/hello-write"))
+                .andExpect(authenticated())
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @DisplayName("A user with privileges can authenticate and is authorized")
+    @WithUserDetails("tt")
+    void testSuccessfulAuthorization() throws Exception {
+        mvc.perform(get("/hello-write"))
+                .andExpect(authenticated())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("A user with privileges can authenticate and is authorized")
+    @WithUserDetails("tt")
+    void testSuccessfulAuthorization2() throws Exception {
+        mvc.perform(get("/hello-rw"))
+                .andExpect(authenticated())
+                .andExpect(status().isOk());
+    }
+
+
+    @Test
+    @DisplayName("A user without privileges can authenticate but is not authorized")
+    void testRoleExpSuccessfulAuthentication() throws Exception {
+        mvc.perform(get("/hello-auth-exp").with(httpBasic("test", "123456")))
+                .andExpect(authenticated())
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @DisplayName("A user with privileges can authenticate and is authorized")
+    @WithUserDetails("yy")
+    void testRoleExpSuccessfulAuthorization() throws Exception {
+        mvc.perform(get("/hello-auth-exp").with(httpBasic("yy", "123456")))
+                .andExpect(authenticated())
+                .andExpect(status().isOk());
+    }
+
+
+    @Test
+    @DisplayName("A user with privileges can authenticate and is authorized")
+    public void testROleSuccessfulAuthorization() throws Exception {
+        mvc.perform(get("/hello-role").with(httpBasic("test_role", "123456")))
+                .andExpect(authenticated())
                 .andExpect(status().isOk());
     }
 }

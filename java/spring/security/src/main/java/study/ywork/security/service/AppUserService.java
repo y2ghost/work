@@ -4,18 +4,24 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class AppUserService implements UserDetailsService {
     private static List<UserObject> users = new ArrayList<>();
+    private final PasswordEncoder passwordEncoder;
 
-    public AppUserService() {
-        users.add(new UserObject("yy", "123456", "ADMIN"));
-        users.add(new UserObject("tt", "123456", "USER"));
+
+    public AppUserService(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+        users.add(new UserObject("yy", "123456", "read"));
+        users.add(new UserObject("tt", "123456", "write"));
     }
 
     @Override
@@ -29,7 +35,9 @@ public class AppUserService implements UserDetailsService {
     }
 
     private UserDetails toUserDetails(UserObject userObject) {
-        return userObject;
+        // 主要是加密用户密码，仅仅示例使用
+        String password = passwordEncoder.encode(userObject.getPassword());
+        return new UserObject(userObject.username, password, userObject.authority);
     }
 
     private static class UserObject implements UserDetails {
