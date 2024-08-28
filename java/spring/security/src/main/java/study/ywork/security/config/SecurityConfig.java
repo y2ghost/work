@@ -16,9 +16,11 @@ import org.springframework.security.web.access.expression.WebExpressionAuthoriza
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.csrf.CsrfFilter;
 import study.ywork.security.component.CustomAuthenticationProvider;
 import study.ywork.security.component.MyAuthenticationProvider;
 import study.ywork.security.filter.AuthenticationLoggingFilter;
+import study.ywork.security.filter.CsrfTokenLoggerFilter;
 import study.ywork.security.filter.MyHeaderFilter;
 import study.ywork.security.filter.RequestValidationFilter;
 
@@ -68,6 +70,7 @@ public class SecurityConfig {
         http.addFilterBefore(new RequestValidationFilter(), BasicAuthenticationFilter.class);
         http.addFilterAfter(new AuthenticationLoggingFilter(), BasicAuthenticationFilter.class);
         http.addFilterAt(headerFilter, BasicAuthenticationFilter.class);
+        http.addFilterAfter(new CsrfTokenLoggerFilter(), CsrfFilter.class);
         http.userDetailsService(userDetailsService);
         // 可以多个认证类，每个认证类可以绑定单独的userDetailsService
         http.authenticationProvider(new MyAuthenticationProvider());

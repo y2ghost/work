@@ -13,11 +13,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import study.ywork.security.config.WithCustomUser;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
@@ -229,12 +231,36 @@ class MainTests {
                 .andExpect(status().isOk());
     }
 
-
     @Test
     @DisplayName("A user with privileges can authenticate and is authorized")
     public void testROleSuccessfulAuthorization() throws Exception {
         mvc.perform(get("/hello-role").with(httpBasic("test_role", "123456")))
                 .andExpect(authenticated())
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("Call endpoint /hello using POST without providing the CSRF token")
+    public void testHelloPOST() throws Exception {
+        mvc.perform(post("/hello"))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @DisplayName("Call endpoint /hello using POST providing the CSRF token")
+    @WithUserDetails("tt")
+    public void testHelloPOSTWithCSRF() throws Exception {
+        mvc.perform(post("/hello").with(csrf()))
+                .andExpect(status().isOk());
+    }
+
+
+    @Test
+    @DisplayName("Logging in authenticating with valid user")
+    public void loggingInWithWrongAuthority() throws Exception {
+        mvc.perform(formLogin().user("yy").password("123456"))
+                .andExpect(redirectedUrl("/home"))
+                .andExpect(status().isFound())
+                .andExpect(authenticated());
     }
 }
