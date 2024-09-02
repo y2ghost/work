@@ -19,6 +19,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.options;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
@@ -233,7 +234,7 @@ class MainTests {
 
     @Test
     @DisplayName("A user with privileges can authenticate and is authorized")
-    public void testROleSuccessfulAuthorization() throws Exception {
+    void testROleSuccessfulAuthorization() throws Exception {
         mvc.perform(get("/hello-role").with(httpBasic("test_role", "123456")))
                 .andExpect(authenticated())
                 .andExpect(status().isOk());
@@ -241,7 +242,7 @@ class MainTests {
 
     @Test
     @DisplayName("Call endpoint /hello using POST without providing the CSRF token")
-    public void testHelloPOST() throws Exception {
+    void testHelloPOST() throws Exception {
         mvc.perform(post("/hello"))
                 .andExpect(status().isForbidden());
     }
@@ -249,18 +250,63 @@ class MainTests {
     @Test
     @DisplayName("Call endpoint /hello using POST providing the CSRF token")
     @WithUserDetails("tt")
-    public void testHelloPOSTWithCSRF() throws Exception {
+    void testHelloPOSTWithCSRF() throws Exception {
         mvc.perform(post("/hello").with(csrf()))
                 .andExpect(status().isOk());
     }
 
-
     @Test
     @DisplayName("Logging in authenticating with valid user")
-    public void loggingInWithWrongAuthority() throws Exception {
+    void loggingInWithWrongAuthority() throws Exception {
         mvc.perform(formLogin().user("yy").password("123456"))
                 .andExpect(redirectedUrl("/home"))
                 .andExpect(status().isFound())
                 .andExpect(authenticated());
+    }
+
+
+    @Test
+    @DisplayName("Call endpoint /hello using GET")
+    @WithMockUser(username = "tt")
+    void testHelloGET() throws Exception {
+        mvc.perform(get("/hello"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("Call endpoint /hello using POST without providing the CSRF token")
+    void testCsrfHelloPOST() throws Exception {
+        mvc.perform(post("/hello"))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @DisplayName("Call endpoint /hello using POST providing the CSRF token")
+    @WithMockUser(username = "tt")
+    void testCsrfHelloPOSTWithCSRF() throws Exception {
+        mvc.perform(post("/hello").with(csrf()))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("Call endpoint /ciao using POST without providing the CSRF token")
+    @WithMockUser(username = "tt")
+    void testCsrfCiaoPOST() throws Exception {
+        mvc.perform(post("/ciao").with(csrf()))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("Test CORS configuration for /test endpoint")
+    public void testCORSForTestEndpoint() throws Exception {
+        mvc.perform(options("/test")
+                        .header("Access-Control-Request-Method", "POST")
+                        .header("Origin", "http://www.example.com")
+                )
+                .andExpect(header().exists("Access-Control-Allow-Origin"))
+                .andExpect(header().string("Access-Control-Allow-Origin", "*"))
+                .andExpect(header().exists("Access-Control-Allow-Methods"))
+                .andExpect(header().string("Access-Control-Allow-Methods", "POST"))
+                .andExpect(status().isOk());
     }
 }

@@ -17,6 +17,10 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import study.ywork.security.component.CustomAuthenticationProvider;
 import study.ywork.security.component.MyAuthenticationProvider;
 import study.ywork.security.filter.AuthenticationLoggingFilter;
@@ -25,6 +29,7 @@ import study.ywork.security.filter.MyHeaderFilter;
 import study.ywork.security.filter.RequestValidationFilter;
 
 import javax.sql.DataSource;
+import java.util.List;
 
 @Configuration
 @EnableAsync
@@ -35,23 +40,51 @@ public class SecurityConfig {
     private final MyHeaderFilter headerFilter;
     private final AuthenticationSuccessHandler authenticationSuccessHandler;
     private final AuthenticationFailureHandler authenticationFailureHandler;
+    private final CsrfTokenRepository csrfTokenRepository;
 
     public SecurityConfig(PasswordEncoder passwordEncoder,
                           UserDetailsService userDetailsService,
                           DataSource dataSource,
                           MyHeaderFilter headerFilter,
                           AuthenticationSuccessHandler authenticationSuccessHandler,
-                          AuthenticationFailureHandler authenticationFailureHandler) {
+                          AuthenticationFailureHandler authenticationFailureHandler,
+                          CsrfTokenRepository csrfTokenRepository) {
         this.passwordEncoder = passwordEncoder;
         this.userDetailsService = userDetailsService;
         this.dataSource = dataSource;
         this.headerFilter = headerFilter;
         this.authenticationSuccessHandler = authenticationSuccessHandler;
         this.authenticationFailureHandler = authenticationFailureHandler;
+        this.csrfTokenRepository = csrfTokenRepository;
     }
 
     @Bean
     SecurityFilterChain configure(HttpSecurity http) throws Exception {
+        http.cors(c -> {
+            CorsConfigurationSource source = request -> {
+                CorsConfiguration config = new CorsConfiguration();
+                config.setAllowedOrigins(List.of("*"));
+                config.setAllowedMethods(List.of("*"));
+                config.setAllowedHeaders(List.of("*"));
+                return config;
+            };
+            c.configurationSource(source);
+        });
+        http.csrf(c -> {
+            c.csrfTokenRepository(csrfTokenRepository);
+            c.csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler());
+            /* 忽略CSRF处理1 */
+            // c.ignoringRequestMatchers("/ciao");
+            /* 忽略CSRF处理2 */
+            // HandlerMappingIntrospector i = new HandlerMappingIntrospector();
+            // MvcRequestMatcher r = new MvcRequestMatcher(i, "/ciao");
+            // c.ignoringRequestMatchers(r);
+            /* 忽略CSRF处理3 */
+            // String pattern = ".*[0-9].*";
+            // String httpMethod = HttpMethod.POST.name();
+            // RegexRequestMatcher r = new RegexRequestMatcher(pattern, httpMethod);
+            // c.ignoringRequestMatchers(r);
+        });
         http.httpBasic(c -> c.realmName("DEMO").authenticationEntryPoint(new CustomEntryPoint()));
         http.formLogin(c -> c.successHandler(authenticationSuccessHandler)
                 .failureHandler(authenticationFailureHandler)

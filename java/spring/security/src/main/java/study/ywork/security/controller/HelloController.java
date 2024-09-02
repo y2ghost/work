@@ -8,6 +8,7 @@ import org.springframework.security.concurrent.DelegatingSecurityContextExecutor
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +24,15 @@ public class HelloController {
     @GetMapping("/hello")
     public String hello() {
         return "Hello!";
+    }
+
+    /**
+     * 配置可以访问的原始主机域名
+     */
+    @PostMapping("/test")
+    @CrossOrigin("http://localhost:8080")
+    public String test() {
+        return "HELLO";
     }
 
     @GetMapping("/hello-user")
@@ -65,6 +75,11 @@ public class HelloController {
         } finally {
             e.shutdown();
         }
+    }
+
+    @PostMapping("/ciao")
+    public String postCiao() {
+        return "Post Ciao";
     }
 
     @GetMapping("/hola")
