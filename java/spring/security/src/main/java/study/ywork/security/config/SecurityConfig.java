@@ -4,6 +4,9 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
+import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -22,6 +25,7 @@ import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import study.ywork.security.component.CustomAuthenticationProvider;
+import study.ywork.security.component.DocumentsPermissionEvaluator;
 import study.ywork.security.component.MyAuthenticationProvider;
 import study.ywork.security.filter.AuthenticationLoggingFilter;
 import study.ywork.security.filter.CsrfTokenLoggerFilter;
@@ -33,6 +37,10 @@ import java.util.List;
 
 @Configuration
 @EnableAsync
+@EnableMethodSecurity(
+        jsr250Enabled = true,
+        securedEnabled = true
+)
 public class SecurityConfig {
     private PasswordEncoder passwordEncoder;
     private final UserDetailsService userDetailsService;
@@ -41,6 +49,8 @@ public class SecurityConfig {
     private final AuthenticationSuccessHandler authenticationSuccessHandler;
     private final AuthenticationFailureHandler authenticationFailureHandler;
     private final CsrfTokenRepository csrfTokenRepository;
+    private final DocumentsPermissionEvaluator evaluator;
+
 
     public SecurityConfig(PasswordEncoder passwordEncoder,
                           UserDetailsService userDetailsService,
@@ -48,7 +58,8 @@ public class SecurityConfig {
                           MyHeaderFilter headerFilter,
                           AuthenticationSuccessHandler authenticationSuccessHandler,
                           AuthenticationFailureHandler authenticationFailureHandler,
-                          CsrfTokenRepository csrfTokenRepository) {
+                          CsrfTokenRepository csrfTokenRepository,
+                          DocumentsPermissionEvaluator evaluator) {
         this.passwordEncoder = passwordEncoder;
         this.userDetailsService = userDetailsService;
         this.dataSource = dataSource;
@@ -56,6 +67,7 @@ public class SecurityConfig {
         this.authenticationSuccessHandler = authenticationSuccessHandler;
         this.authenticationFailureHandler = authenticationFailureHandler;
         this.csrfTokenRepository = csrfTokenRepository;
+        this.evaluator = evaluator;
     }
 
     @Bean
@@ -116,6 +128,13 @@ public class SecurityConfig {
     InitializingBean initializingBean() {
         // 允许框架管理的线程可以拷贝安全上下文，非框架管理的线程不会生效
         return () -> SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
+    }
+
+    @Bean
+    public MethodSecurityExpressionHandler createExpressionHandler() {
+        var expressionHandler = new DefaultMethodSecurityExpressionHandler();
+        expressionHandler.setPermissionEvaluator(evaluator);
+        return expressionHandler;
     }
 
     private UserDetailsService h2UserDetailsService() {

@@ -6,12 +6,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import study.ywork.security.config.WithCustomUser;
+import study.ywork.security.domain.Document;
+import study.ywork.security.domain.Employee;
+import study.ywork.security.domain.Product;
+import study.ywork.security.service.BookService;
+import study.ywork.security.service.DocumentService;
+import study.ywork.security.service.NameService;
+import study.ywork.security.service.ProductService;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
@@ -33,6 +47,14 @@ class MainTests {
     private MockMvc mvc;
     @Value("${authorization.key}")
     private String key;
+    @Autowired
+    private NameService nameService;
+    @Autowired
+    private BookService bookService;
+    @Autowired
+    private DocumentService documentService;
+    @Autowired
+    private ProductService productService;
 
     @Test
     @DisplayName("Test calling /hello endpoint without authentication returns unauthorized.")
@@ -298,7 +320,7 @@ class MainTests {
 
     @Test
     @DisplayName("Test CORS configuration for /test endpoint")
-    public void testCORSForTestEndpoint() throws Exception {
+    void testCORSForTestEndpoint() throws Exception {
         mvc.perform(options("/test")
                         .header("Access-Control-Request-Method", "POST")
                         .header("Origin", "http://www.example.com")
@@ -308,5 +330,137 @@ class MainTests {
                 .andExpect(header().exists("Access-Control-Allow-Methods"))
                 .andExpect(header().string("Access-Control-Allow-Methods", "POST"))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(authorities = "read")
+    @DisplayName("When the method is called with an authenticated user having a wrong authority, " +
+            "it throws AccessDeniedException")
+    void testNameServiceWithUserButWrongAuthority() {
+        assertThrows(AccessDeniedException.class,
+                () -> nameService.getName());
+    }
+
+    @Test
+    @WithMockUser(authorities = "write")
+    @DisplayName("When the method is called with an authenticated user having a correct authority, " +
+            "it returns the expected result")
+    void testNameServiceWithUserButCorrectAuthority() {
+        var result = nameService.getName();
+        assertEquals("test", result);
+    }
+
+    @Test
+    @DisplayName("When the method is called without a user," +
+            " it throws IllegalArgumentException")
+    void testNameServiceWithNoUser() {
+        assertThrows(IllegalArgumentException.class,
+                () -> nameService.getSecretNames("john"));
+    }
+
+    @Test
+    @DisplayName("When the method is called with a different username parameter than the authenticated user, " +
+            "it should throw AccessDeniedException.")
+    @WithMockUser(username = "test")
+    void testNameServiceCallingTheSecretNamesMethodWithDifferentUser() {
+        assertThrows(AccessDeniedException.class,
+                () -> nameService.getSecretNames("tt"));
+    }
+
+    @Test
+    @DisplayName("When the method is called for the authenticated user, " +
+            "it should return the expected result.")
+    @WithMockUser(username = "yy")
+    void testNameServiceCallingTheSecretNamesMethodWithAuthenticatedUser() {
+        var result = nameService.getSecretNames("yy");
+        assertEquals(List.of("vv"), result);
+    }
+
+    @Test
+    @DisplayName("When the method is called with a user " +
+            "but the returned object doesn't meet the authorization rules, " +
+            "it should throw AccessDeniedException")
+    @WithMockUser(username = "tt")
+    void testBookServiceSearchingProtectedUser() {
+        assertThrows(AccessDeniedException.class,
+                () -> bookService.getBookDetails("tt"));
+    }
+
+    @Test
+    @DisplayName("When the method is called for a reader that doesn't have the reader role, " +
+            "it should successfully return.")
+    @WithMockUser(username = "yy")
+    void testNameServiceSearchingUnprotectedUser() {
+        var result = bookService.getBookDetails("yy");
+        var expected = new Employee("writer0",
+                List.of("math easy"),
+                List.of("write", "read"));
+        assertEquals(expected, result);
+    }
+
+    @Test
+    @DisplayName("When the method is called without a user, " +
+            "it throws AuthenticationException")
+    void testDocumentServiceWithNoUser() {
+        assertThrows(AuthenticationException.class,
+                () -> documentService.getDocument("abc123"));
+    }
+
+    @Test
+    @DisplayName("When the method is called with a user having role MANAGER " +
+            "and the document doesn't belong to the caller," +
+            "it should throw AccessDeniedException")
+    @WithMockUser(username = "emma", roles = "manager")
+    void testDocumentServiceWithManagerRole() {
+        assertThrows(AccessDeniedException.class,
+                () -> documentService.getDocument("abc123"));
+    }
+
+    @Test
+    @DisplayName("When the method is called with a user having role MANAGER " +
+            "and the document belongs to the caller," +
+            "it should return the document details")
+    @WithMockUser(username = "emma", roles = "manager")
+    void testDocumentServiceWithManagerRoleForOwnUserDocument() {
+        var result = documentService.getDocument2("asd555");
+        var expected = new Document("emma");
+        assertEquals(expected, result);
+    }
+
+    @Test
+    @DisplayName("When the method is called with a user having role ADMIN, " +
+            "it should return the document details")
+    @WithMockUser(username = "natalie", roles = "admin")
+    void testDocumentServiceWithAdminRole() {
+        var result = documentService.getDocument2("asd555");
+        var expected = new Document("emma");
+        assertEquals(expected, result);
+    }
+
+    @Test
+    @DisplayName("When the method is called with an authenticated user, " +
+            "it only returns products for the authenticated user")
+    @WithMockUser(username = "julien")
+    void testProductServiceWithUser() {
+        List<Product> products = new ArrayList<>();
+        products.add(new Product("beer", "nikolai"));
+        products.add(new Product("candy", "nikolai"));
+        products.add(new Product("chocolate", "julien"));
+        var result = productService.sellProducts(products);
+        var expected = List.of(new Product("chocolate", "julien"));
+        assertEquals(expected, result);
+    }
+
+    @Test
+    @DisplayName("When the method is called with an authenticated user, " +
+            "it only returns products for the authenticated user")
+    @WithMockUser(username = "julien")
+    void testProductServiceWithUser2() {
+        List<Product> products = new ArrayList<>();
+        products.add(new Product("beer", "nikolai"));
+        products.add(new Product("candy", "nikolai"));
+        products.add(new Product("chocolate", "julien"));
+        var result = productService.findProducts();
+        result.forEach(p -> assertEquals("julien", p.getOwner()));
     }
 }

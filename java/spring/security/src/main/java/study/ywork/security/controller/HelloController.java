@@ -10,9 +10,12 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+import study.ywork.security.service.NameService;
 
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -20,6 +23,11 @@ import java.util.concurrent.Executors;
 @RestController
 public class HelloController {
     private final Logger log = LoggerFactory.getLogger(HelloController.class);
+    private final NameService nameService;
+
+    public HelloController(NameService nameService) {
+        this.nameService = nameService;
+    }
 
     @GetMapping("/hello")
     public String hello() {
@@ -37,9 +45,6 @@ public class HelloController {
 
     @GetMapping("/hello-user")
     public String hello(Authentication a) {
-        // 如果不用参数注入的方式，等价如下代码
-        // SecurityContext context = SecurityContextHolder.getContext();
-        // Authentication a = context.getAuthentication();
         return "Hello, " + a.getName() + "!";
     }
 
@@ -126,5 +131,10 @@ public class HelloController {
     @PostMapping("/hello")
     public String postHello() {
         return "Post Hello!";
+    }
+
+    @GetMapping("/secret/names/{name}")
+    public List<String> names(@PathVariable String name) {
+        return nameService.getSecretNames(name);
     }
 }
