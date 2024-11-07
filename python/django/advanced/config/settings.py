@@ -59,7 +59,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     "default":
-    env.dj_db_url("DATABASE_URL", default="postgres://postgres@db/postgres")
+    env.dj_db_url("DATABASE_URL", default="postgresql://yy:yy123456@localhost/yy")
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -86,6 +86,7 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (str(BASE_DIR.joinpath('static')), )
