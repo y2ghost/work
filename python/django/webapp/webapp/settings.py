@@ -14,6 +14,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'home',
     'bands',
+    'content',
 ]
 
 MIDDLEWARE = [
@@ -74,4 +75,7 @@ USE_I18N = True
 USE_TZ = True
 STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+LOGIN_REDIRECT_URL = '/bands/bands/'
+LOGOUT_REDIRECT_URL = '/bands/bands/'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
