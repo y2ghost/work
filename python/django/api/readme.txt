@@ -18,3 +18,9 @@
 注册账户
 - http://127.0.0.1:8000/api/dj-rest-auth/registration/
 
+动态密钥
+- python -c "import secrets; print(secrets.token_urlsafe())"
+
+postgresql库
+- 生产环境建议: pip install psycopg2
+
