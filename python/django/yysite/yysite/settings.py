@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'blog.apps.BlogConfig',
     'images.apps.ImagesConfig',
     'actions.apps.ActionsConfig',
+    'common.apps.CommonConfig',
 ]
 
 MIDDLEWARE = [
@@ -38,6 +39,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'common.localthread_middleware.PopulateLocalsThreadMiddleware',
+
 ]
 
 ROOT_URLCONF = 'yysite.urls'
@@ -114,4 +117,26 @@ INTERNAL_IPS = [
 REDIS_HOST = 'localhost'
 REDIS_PORT = 6379
 REDIS_DB = 0
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {'verbose': {'format': '%(asctime)s %(process)d %(thread)d %(message)s'}},
+    'loggers': {
+        'django_default': {
+            'handlers': ['django_file'],
+            'level': 'INFO',
+            'propogate': True,
+        },
+    },
+    'handlers': {
+        'django_file': {
+            'class': 'common.custom_log_handlers.MakeRotatingFileHandler',
+            'filename': BASE_DIR / 'site.log',
+            'maxBytes': 1024 * 1024 * 10,
+            'backupCount': 10,
+            'formatter': 'verbose'
+        },
+    },
+}
 
