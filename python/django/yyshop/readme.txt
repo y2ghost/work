@@ -4,7 +4,14 @@
 - pip install djangorestframework
 - pip install celery
 - pip install redis
+- pip install stripe
+- pip install python-decouple
+- pip install WeasyPrint
 - pip freeze > requirements.txt
+
+依赖服务
+- redis
+- sqlite / mariadb server
 
 依赖文件
 - python -m pip install -r requirements.txt
@@ -15,6 +22,9 @@
 创建项目和应用示例
 - django-admin startproject yyshop
 - python manage.py startapp shop
+
+静态资源整理
+- python manage.py collectstatic
 
 动态密钥
 - python -c "import secrets; print(secrets.token_urlsafe())"

@@ -1,4 +1,5 @@
 from pathlib import Path
+from decouple import config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-8vsl2p^t^g0d4@g*5j(+5%)fmk+v^1$xb!n^qwf@mrfucst1uz'
@@ -13,7 +14,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'cart.apps.CartConfig',
+    'coupons.apps.CouponsConfig',
     'orders.apps.OrdersConfig',
+    'payment.apps.PaymentConfig',
     'shop.apps.ShopConfig',
 ]
 
@@ -75,6 +78,7 @@ TIME_ZONE = 'Asia/Shanghai'
 USE_I18N = True
 USE_TZ = True
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'static'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -84,4 +88,9 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # CELERY Redis配置 redis://:password@hostname:port/db_number
 CELERY_BROKER_URL = 'redis://127.0.0.1:6379/1'
 CELERY_RESULT_BACKEND = CELERY_BROKER_URL
+
+# stripe的配置
+STRIPE_PUBLISHABLE_KEY = config('STRIPE_PUBLISHABLE_KEY')
+STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
+STRIPE_API_VERSION = '2024-11-20.acacia'
 

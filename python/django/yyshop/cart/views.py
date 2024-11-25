@@ -1,3 +1,4 @@
+from coupons.forms import CouponApplyForm
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.shortcuts import render
@@ -36,5 +37,13 @@ def cart_detail(request):
         item["update_quantity_form"] = CartAddProductForm(
             initial={"quantity": item["quantity"], "override": True}
         )
-    return render(request, "cart/detail.html", {"cart": cart})
+    coupon_apply_form = CouponApplyForm()
+    return render(
+        request,
+        "cart/detail.html",
+        {
+            "cart": cart,
+            "coupon_apply_form": coupon_apply_form,
+        }
+    )
 
