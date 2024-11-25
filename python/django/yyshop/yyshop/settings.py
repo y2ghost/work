@@ -81,8 +81,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 CART_SESSION_ID = 'cart'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-# CELERY Redis配置
-REDIS_CONNECTION_STRING = 'redis://127.0.0.1:6379'
-CELERY_BROKER_URL = REDIS_CONNECTION_STRING
-CELERY_RESULT_BACKEND = REDIS_CONNECTION_STRING
+# CELERY Redis配置 redis://:password@hostname:port/db_number
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379/1'
+CELERY_RESULT_BACKEND = CELERY_BROKER_URL
 
