@@ -7,6 +7,9 @@
 - pip install redis
 - pip install django-debug-toolbar
 - pip install django-redisboard
+- pip install djangorestframework
+- pip install -U 'channels[daphne]'
+- pip install channels-redis
 - pip freeze > requirements.txt
 
 依赖服务
