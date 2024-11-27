@@ -1,14 +1,13 @@
-from django.http import HttpResponse
-from django.http import JsonResponse
+from datetime import date, timedelta
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
+
 
 def credits(request):
     content = "Nicky\nYour Name"
-    return HttpResponse(content, content_type="text/palin")
 
-def homePage(request):
-    content = "Hello YY"
-    return HttpResponse(content, content_type="text/palin")
+    return HttpResponse(content, content_type="text/plain")
+
 
 def about(request):
     content = [
@@ -20,7 +19,8 @@ def about(request):
         "<body>",
         "  <h1>YY About</h1>",
         "  <p>",
-        "    this is a about page for study",
+        "    YY is a for musicians seeking musicians. Find your next ",
+        "    band or band-mate. Find your next gig.",
         "  </p>",
         "</body>",
         "</html>",
@@ -29,25 +29,41 @@ def about(request):
     content = "\n".join(content)
     return HttpResponse(content, content_type="text/html")
 
+
 def version(request):
     data = {
-        "version": "1.2.3",
+        "version": "0.0.1",
     }
 
     return JsonResponse(data)
 
-def news_internal(request, template):
-    data = {
-        "news": [
-            "y1 now has a news page!",
-            "y2 has its first web page",
-        ],
-    }
-    return render(request, template, data)
 
 def news(request):
-    return news_internal(request, "news.html")
+    data = {
+        "news": [
+            "YY now has a news page!",
+            "YY has its first web page",
+        ],
+    }
 
-def news2(request):
-    return news_internal(request, "news2.html")
+    return render(request, "news2.html", data)
 
+
+def news_advanced(request):
+    today = date.today()
+    before1 = today - timedelta(days=1)
+    before2 = today - timedelta(days=2)
+
+    data = {
+        "news": [
+            (today, "Advanced news added! Even more exclamation points!!!"),
+            (before1, "YY now has a news page!"),
+            (before2, "YY has its first web page"),
+        ],
+    }
+
+    return render(request, "adv_news.html", data)
+
+
+def home(request):
+    return render(request, "home.html")

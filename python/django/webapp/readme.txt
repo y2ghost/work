@@ -1,9 +1,5 @@
 依赖安装
-- pip install django
-- pip install pillow
-- pip install django-ninja
-
-
+- pip install -r requirements.txt
 
 项目初始化
 - python manage.py makemigrations
@@ -19,4 +15,8 @@
 
 测试自定义登录页面
 - 访问http://localhost:8000/bands/restricted_page/
+
+加载数据
+- python manage.py loaddata bands
+- python manage.py loaddata promoters
 

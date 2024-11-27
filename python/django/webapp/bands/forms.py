@@ -1,5 +1,4 @@
-from bands.models import Musician
-from bands.models import Venue
+from bands.models import Musician, Room, Venue
 from django import forms
 
 VenueForm = forms.modelform_factory(
@@ -11,3 +10,9 @@ MusicianForm = forms.modelform_factory(
     fields=["first_name", "last_name", "birth", "description", "picture"],
 )
 
+RoomForm = forms.modelform_factory(
+    Room,
+    fields=[
+        "name",
+    ],
+)

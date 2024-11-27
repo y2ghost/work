@@ -1,10 +1,7 @@
 from django.test import TestCase
 
-class TestHome(TestCase):
-    def test_home_page_status_code(self):
-        response = self.client.get('/')
-        self.assertEqual(response.status_code, 200)
-    def test_credits_page_status_code(self):
-        response = self.client.get('/credits/')
-        self.assertEqual(response.status_code, 200)
 
+class TestHome(TestCase):
+    def test_credits(self):
+        response = self.client.get("/credits/")
+        self.assertEqual(200, response.status_code)

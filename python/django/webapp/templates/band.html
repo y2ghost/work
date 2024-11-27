@@ -6,6 +6,7 @@
 
 {% block content %}
   <h1>{{band.name}}</h1>
+
   <h2>Band Members</h2>
   <ul>
     {% for musician in band.musicians.all %}
@@ -17,4 +18,3 @@
     {% endfor %}
   </ul>
 {% endblock content %}
-

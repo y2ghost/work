@@ -1,16 +1,17 @@
 from ninja import Router
 
+
 router = Router()
 
-@router.get("/hello")
-def hello(request):
-    return "hello yy"
+
+@router.get("/")
+def home(request):
+    return "YY rocks!"
 
 
-@router.get("/version")
+@router.get("/version/")
 def version(request):
     data = {
-        "version": "1.2.3",
+        "version": "0.0.1",
     }
     return data
-
