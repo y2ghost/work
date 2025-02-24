@@ -1,0 +1,37 @@
+---
+- name: 本地定义变量示例
+  hosts: all
+  vars:
+    user_name: yy
+    user_description: "测试用户"
+    show: false
+  tasks:
+    - name: 显示用户名称
+      debug:
+        msg: "{{user_name}} - {{user_description}}"
+    - name: 条件显示名称
+      debug:
+        msg: "{{user_name}} - {{user_description}}"
+      when: show
+
+- name: 变量文件示例
+  hosts: all
+  vars_files:
+  - vars/users.yml
+  - vars/services.yml
+  tasks:
+    - name: 显示服务名称
+      debug:
+        msg: "{{service_name}} - {{service_description}}"
+    - name: 显示admin名称
+      debug:
+        msg: "{{users['admin']['name']}} - {{users['admin']['description']}}"
+
+- name: 主机变量示例
+  hosts: webservers
+  tasks:
+    - name: web160主机变量示例
+      debug:
+        msg: "{{item}}"
+      loop: "{{packages}}"
+
