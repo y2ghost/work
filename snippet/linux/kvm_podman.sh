@@ -8,7 +8,7 @@ sudo systemctl start libvirtd
 # 通过cockpit方式安装虚拟机
 sudo dnf install cockpit-machines
 
-# docker安装
+# podman等工具安装
 sudo dnf install container-tools
 skopeo inspect docker://docker.io/library/rockylinux:9.1-minimal
 podman search rockylinux
@@ -23,5 +23,5 @@ podman start <container>
 podman exec -it <container> /bin/bash
 podman pause <container>
 podman unpause <container>
-podman rm <container>2
+podman rm <container>
 
