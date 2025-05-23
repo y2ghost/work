@@ -5,8 +5,7 @@ Mariadb官方安装
 sudo apt-get install apt-transport-https curl
 sudo mkdir -p /etc/apt/keyrings
 sudo curl -o /etc/apt/keyrings/mariadb-keyring.pgp 'https://mariadb.org/mariadb_release_signing_key.pgp'
-# 添加配置文件/etc/apt/sources.list.d/mariadb.list
-# deb [signed-by=/etc/apt/keyrings/mariadb-keyring.pgp] https://deb.mariadb.org/11.2/ubuntu jammy main
+echo "deb [signed-by=/etc/apt/keyrings/mariadb-keyring.pgp] https://mirrors.tuna.tsinghua.edu.cn/mariadb/repo/11.4/ubuntu jammy main" | sudo tee /etc/apt/sources.list.d/mariadb.list
 sudo apt-get update
 sudo apt-get install mariadb-server
 
