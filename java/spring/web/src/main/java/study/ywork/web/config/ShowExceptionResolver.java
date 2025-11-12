@@ -1,19 +1,20 @@
 package study.ywork.web.config;
 
-import java.util.Properties;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.core.Ordered;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
+
+import java.util.Properties;
 
 /*
  * 用来捕获处理器函数发生异常行为时自定义异常处理逻辑，记住处理不了其他地方发送的异常
  * 委托SimpleMappingExceptionResolver类处理
  */
 public class ShowExceptionResolver implements HandlerExceptionResolver, Ordered {
-    private SimpleMappingExceptionResolver smeResolver;
+    private final SimpleMappingExceptionResolver smeResolver;
 
     public ShowExceptionResolver() {
         this.smeResolver = new SimpleMappingExceptionResolver();
@@ -30,7 +31,7 @@ public class ShowExceptionResolver implements HandlerExceptionResolver, Ordered 
      */
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler,
-        Exception ex) {
+                                         Exception ex) {
         Class<?> cls = ex.getClass();
         if (cls != NullPointerException.class) {
             return null;

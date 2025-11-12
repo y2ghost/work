@@ -1,14 +1,15 @@
 package study.ywork.web.test.request.format;
 
+import jakarta.annotation.PostConstruct;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
-import javax.annotation.PostConstruct;
 
 public class CustomerDataService {
-    private Map<Long, Customer> customerMap = new HashMap<>();
+    private final Map<Long, Customer> customerMap = new HashMap<>();
 
     @PostConstruct
     private void postConstruct() {

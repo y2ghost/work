@@ -1,7 +1,8 @@
 package study.ywork.web.test.request.patch;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
-import javax.annotation.PostConstruct;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,8 +12,8 @@ public interface ArticleService {
     void updateArticle(long id, String content);
 
     @Service
-    static class DefaultArticleService implements ArticleService {
-        private Map<Long, Article> articleMap = new HashMap<>();
+    class DefaultArticleService implements ArticleService {
+        private final Map<Long, Article> articleMap = new HashMap<>();
 
         @PostConstruct
         private void postConstruct() {

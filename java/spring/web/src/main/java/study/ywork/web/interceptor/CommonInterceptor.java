@@ -1,16 +1,15 @@
 package study.ywork.web.interceptor;
 
-import java.time.LocalDateTime;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.web.context.request.async.WebAsyncManager;
 import org.springframework.web.context.request.async.WebAsyncUtils;
 import org.springframework.web.servlet.AsyncHandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.time.LocalDateTime;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /*
  * HandlerInterceptorAdapter类作为通用的拦截器实现，只需要继承它并添加自己的业务逻辑
@@ -42,7 +41,7 @@ public class CommonInterceptor implements AsyncHandlerInterceptor {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
-            ModelAndView modelAndView) throws Exception {
+                           ModelAndView modelAndView) throws Exception {
         System.out.println("调用CommonInterceptor::postHandle-线程: " + getThreadName());
     }
 

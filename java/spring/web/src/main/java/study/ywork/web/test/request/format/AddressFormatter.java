@@ -1,7 +1,7 @@
 package study.ywork.web.test.request.format;
 
 import org.springframework.format.Formatter;
-import java.text.ParseException;
+
 import java.util.Locale;
 
 public class AddressFormatter implements Formatter<Address> {
@@ -12,7 +12,7 @@ public class AddressFormatter implements Formatter<Address> {
     }
 
     @Override
-    public Address parse(String text, Locale locale) throws ParseException {
+    public Address parse(String text, Locale locale) {
         if (null != text) {
             String[] parts = text.split(",");
             if (style == Style.FULL && parts.length == 4) {
@@ -26,7 +26,7 @@ public class AddressFormatter implements Formatter<Address> {
                 Address address = new Address();
                 address.setCity(parts[0].trim());
                 address.setZipCode(parts[1].trim());
-                address.setCounty(parts[4].trim());
+                address.setCounty(parts[2].trim());
                 return address;
             }
         }

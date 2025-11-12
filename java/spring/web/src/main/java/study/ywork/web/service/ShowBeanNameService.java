@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ShowBeanNameService {
-    private ApplicationContext context;
+    private final ApplicationContext context;
 
     public ShowBeanNameService(ApplicationContext context) {
         this.context = context;

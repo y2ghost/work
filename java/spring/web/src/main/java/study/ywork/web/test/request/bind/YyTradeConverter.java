@@ -3,7 +3,7 @@ package study.ywork.web.test.request.bind;
 import org.springframework.core.convert.converter.Converter;
 
 public class YyTradeConverter implements Converter<String, YyTrade> {
-    private YyTradeService tradeService;
+    private final YyTradeService tradeService;
 
     public YyTradeConverter(YyTradeService tradeService) {
         this.tradeService = tradeService;

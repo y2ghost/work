@@ -10,7 +10,6 @@ import study.ywork.web.test.config.ViewConfig;
 @Configuration
 @Import(ViewConfig.class)
 public class UserWebConfig {
-
     @Bean
     public RegisterController getRegisterController() {
         return new RegisterController(getUserService());

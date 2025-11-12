@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import java.util.Date;
 import java.util.Map;
 
@@ -24,8 +25,8 @@ public class TradeController {
     }
 
     @GetMapping(headers = "From")
-    public String handleRequestByFromHeader(@RequestHeader String From, Model model) {
-        String msg = "From: " + From;
+    public String handleRequestByFromHeader(@RequestHeader("From") String from, Model model) {
+        String msg = "From: " + from;
         System.out.println(msg);
         model.addAttribute("msg", msg);
         return VIEW;
@@ -47,9 +48,9 @@ public class TradeController {
         return VIEW;
     }
 
-    @GetMapping(headers = { "User-Agent", "Accept-Language" })
+    @GetMapping(headers = {"User-Agent", "Accept-Language"})
     public String handleRequestByTwoHeaders(@RequestHeader("User-Agent") String userAgent,
-        @RequestHeader("Accept-Language") String acceptLanguage, Model map) {
+                                            @RequestHeader("Accept-Language") String acceptLanguage, Model map) {
         String msg = "User-Agent, Accept-Language: " + userAgent + ", " + acceptLanguage;
         System.out.println(msg);
         map.addAttribute("msg", msg);
@@ -58,7 +59,7 @@ public class TradeController {
 
     @GetMapping(value = "{tradeId}")
     public String handleRequestById(@PathVariable("tradeId") String tradeId,
-        @RequestHeader("If-Modified-Since") Date date, Model model) {
+                                    @RequestHeader("If-Modified-Since") Date date, Model model) {
         String msg = "tradeId, If-Modified-Since: " + tradeId + ", " + date;
         System.out.println(msg);
         model.addAttribute("msg", msg);
@@ -67,7 +68,7 @@ public class TradeController {
 
     @GetMapping(value = "exchangeRates")
     public String handleExchangeRatesRequest(@RequestHeader(value = "Accept", required = false) String acceptHeader,
-        Model model) {
+                                             Model model) {
         String msg = "Accept: " + acceptHeader;
         System.out.println(msg);
         model.addAttribute("msg", msg);

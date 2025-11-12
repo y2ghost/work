@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /*
- * 没指定具体的请求方法，回报404错误
+ * 没指定具体的请求方法，返回 404 错误
  */
 @Controller
 @RequestMapping("/users")

@@ -1,18 +1,19 @@
 package study.ywork.web.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
+import org.springframework.validation.ValidationUtils;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import study.ywork.web.domain.User;
 import study.ywork.web.service.UserService;
-import javax.validation.Valid;
-import org.springframework.validation.Errors;
-import org.springframework.validation.ValidationUtils;
-import org.springframework.validation.Validator;
+
 import java.util.regex.Pattern;
 
 @Controller
@@ -23,8 +24,8 @@ public class RegisterController {
     private static final String PASSWORD = "password";
     private static final String REGISTER = "user-register";
     private static final String REGISTER_DONE = "user-register-done";
-    private UserService userService;
-    private UserValidator userValidator = new UserValidator();
+    private final UserService userService;
+    private final UserValidator userValidator = new UserValidator();
 
     public RegisterController(UserService userService) {
         this.userService = userService;

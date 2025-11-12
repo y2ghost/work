@@ -9,7 +9,7 @@ import study.ywork.web.service.ShowBeanNameService;
 @Controller
 @RequestMapping("/")
 public class MessageController {
-    private ShowBeanNameService showBeanNameService;
+    private final ShowBeanNameService showBeanNameService;
 
     public MessageController(ShowBeanNameService showBeanNameService) {
         this.showBeanNameService = showBeanNameService;

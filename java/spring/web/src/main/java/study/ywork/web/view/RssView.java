@@ -1,17 +1,18 @@
 package study.ywork.web.view;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import com.rometools.rome.feed.rss.Channel;
 import com.rometools.rome.feed.rss.Content;
 import com.rometools.rome.feed.rss.Item;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.feed.AbstractRssFeedView;
 import study.ywork.web.domain.FeedEntry;
 import study.ywork.web.domain.FeedInfo;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /*
  * RSS文件视图例子，配合BeanNameViewResolver接口对象使用
@@ -28,7 +29,7 @@ public class RssView extends AbstractRssFeedView {
 
     @Override
     protected List<Item> buildFeedItems(Map<String, Object> model, HttpServletRequest httpServletRequest,
-        HttpServletResponse httpServletResponse) throws Exception {
+                                        HttpServletResponse httpServletResponse) throws Exception {
         List<Item> items = new ArrayList<>();
         FeedInfo feedInfo = (FeedInfo) model.get("feedInfo");
 

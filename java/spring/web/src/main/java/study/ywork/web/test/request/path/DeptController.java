@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * 使用互斥的正则表达避免路径出现二义性 exception
+ * 使用互斥正则表达避免路径出现二义性 exception
  */
 @Controller
 @RequestMapping("/dept")

@@ -1,14 +1,13 @@
 package study.ywork.web.test.request.patch;
 
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @RequestMapping("/articles")
 public class ArticleController {
     private ArticleService articleService;
@@ -19,7 +18,6 @@ public class ArticleController {
 
     // 处理JSON数据类型:application/json
     @PatchMapping("/{id}")
-    @ResponseBody
     public String patchArticle(@RequestBody Article article) {
         System.out.println("通过JSON创建文章: " + article);
         articleService.updateArticle(article.getId(), article.getContent());
@@ -28,7 +26,6 @@ public class ArticleController {
 
     // 处理表单数据类型: application/x-www-form-urlencoded
     @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    @ResponseBody
     public String patchArticle(@RequestBody MultiValueMap<String, String> formParams) {
         System.out.println("通过表单创建文章: " + formParams);
         long id = Long.parseLong(formParams.getFirst("id"));

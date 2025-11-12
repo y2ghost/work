@@ -1,6 +1,7 @@
 package study.ywork.web.test.request.bind;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
+
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.HashMap;
@@ -8,7 +9,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class YyTradeService {
-    private HashMap<Long, YyTrade> trades = new HashMap<>();
+    private final HashMap<Long, YyTrade> trades = new HashMap<>();
 
     @PostConstruct
     private void postConstruct() {
@@ -24,7 +25,7 @@ public class YyTradeService {
         }
     }
 
-    public YyTrade getTradeById(long id) {
+    public YyTrade getTradeById(Long id) {
         return trades.get(id);
 
     }

@@ -10,7 +10,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
  */
 @Component
 public class PrintMessageConverters {
-    private RequestMappingHandlerAdapter adapter;
+    private final RequestMappingHandlerAdapter adapter;
 
     public PrintMessageConverters(RequestMappingHandlerAdapter adapter) {
         this.adapter = adapter;
@@ -20,7 +20,7 @@ public class PrintMessageConverters {
     public void handleContextRefresh(ContextRefreshedEvent event) {
         System.out.println("-- 打印注册的HttpMessageConverter接口对象 --");
         System.out.println("Context: " + event.getApplicationContext());
-        adapter.getMessageConverters().stream().forEach(System.out::println);
+        adapter.getMessageConverters().forEach(System.out::println);
         System.out.println("-- 打印结束 --");
     }
 }

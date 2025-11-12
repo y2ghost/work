@@ -1,5 +1,6 @@
 package study.ywork.web.controller;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -9,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
+
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import javax.servlet.http.HttpServletResponse;
 
 /*
  * 演示设置Last-Modified和If-Modified-Since头
@@ -28,7 +29,7 @@ public class ModifiedController {
     @GetMapping(value = "/test-one")
     public String handleTestOne(ServletWebRequest swr) {
         if (swr.checkNotModified(getResourceLastModified())) {
-            // 返回304代码，空内容，表示未变化
+            // 返回 204 代码，空内容，表示未变化
             return null;
         }
 

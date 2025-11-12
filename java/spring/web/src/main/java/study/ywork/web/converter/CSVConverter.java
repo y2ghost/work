@@ -1,16 +1,17 @@
 package study.ywork.web.converter;
 
 import com.opencsv.CSVReader;
-import com.opencsv.CSVWriter;
+import com.opencsv.ICSVWriter;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.HeaderColumnNameMappingStrategy;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
-import study.ywork.web.domain.ListParam;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.AbstractHttpMessageConverter;
+import study.ywork.web.domain.ListParam;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -59,9 +60,9 @@ public class CSVConverter<T, L extends ListParam<T>> extends AbstractHttpMessage
         strategy.setType(toBeanType(l.getClass().getGenericSuperclass()));
         OutputStreamWriter outputStream = new OutputStreamWriter(outputMessage.getBody());
         StatefulBeanToCsv<T> beanToCsv = new StatefulBeanToCsvBuilder<T>(outputStream)
-            .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
-            .withMappingStrategy(strategy)
-            .build();
+                .withQuotechar(ICSVWriter.NO_QUOTE_CHARACTER)
+                .withMappingStrategy(strategy)
+                .build();
 
         try {
             beanToCsv.write(l.getList());

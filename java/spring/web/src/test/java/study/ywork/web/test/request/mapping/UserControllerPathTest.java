@@ -28,14 +28,14 @@ class UserControllerPathTest {
     @Test
     void testMyMvcController() throws Exception {
         ResultMatcher ok = MockMvcResultMatchers.status().isOk();
-        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/dept/account/users");
+        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/users/dept/account");
         this.mockMvc.perform(builder).andExpect(ok);
     }
 
     @Test
     void testMyMvcController2() throws Exception {
         ResultMatcher ok = MockMvcResultMatchers.status().isOk();
-        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/dept1/dept2/dept3/dept4/dept5/users");
+        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/users/dept1/dept2/dept3/dept4/dept5");
         this.mockMvc.perform(builder).andExpect(ok);
     }
 }

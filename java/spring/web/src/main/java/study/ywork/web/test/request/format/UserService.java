@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public class UserService {
-    private Map<Long, User> userMap = new HashMap<>();
+    private final Map<Long, User> userMap = new HashMap<>();
 
     public void saveUser(User user) {
         if (user.getId() == null) {

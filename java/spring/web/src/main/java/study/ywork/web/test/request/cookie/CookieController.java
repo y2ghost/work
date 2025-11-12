@@ -1,12 +1,13 @@
 package study.ywork.web.test.request.cookie;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
 import java.util.Arrays;
 
 @Controller
@@ -29,7 +30,7 @@ public class CookieController {
 
     @GetMapping("test2")
     public String handleRequest(
-        @CookieValue(value = "testCookie", defaultValue = "defaultCookieValue") String cookieValue, Model model) {
+            @CookieValue(value = "testCookie", defaultValue = "defaultCookieValue") String cookieValue, Model model) {
         System.out.println(cookieValue);
         model.addAttribute("cookieValue", cookieValue);
         return VIEW;

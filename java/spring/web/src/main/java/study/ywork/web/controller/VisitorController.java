@@ -1,11 +1,11 @@
 package study.ywork.web.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import study.ywork.web.domain.VisitorInfo;
+
 import java.time.LocalDateTime;
 
 /*
@@ -13,8 +13,11 @@ import java.time.LocalDateTime;
  */
 @Controller
 public class VisitorController {
-    @Autowired
-    private VisitorInfo visitorInfo;
+    private final VisitorInfo visitorInfo;
+
+    public VisitorController(VisitorInfo visitorInfo) {
+        this.visitorInfo = visitorInfo;
+    }
 
     @GetMapping("/visitor")
     public String appHandler(Model model) {

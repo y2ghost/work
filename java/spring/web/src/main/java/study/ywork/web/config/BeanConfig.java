@@ -1,24 +1,21 @@
 package study.ywork.web.config;
 
-import java.util.Locale;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
-import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.LocaleContextResolver;
-import org.springframework.web.servlet.ThemeResolver;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
-import org.springframework.web.servlet.theme.FixedThemeResolver;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.groovy.GroovyMarkupConfigurer;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import study.ywork.web.controller.BeanNameTwoController;
+
+import java.util.Locale;
 
 /*
  * 定义的Bean名称为DispatcherServlet.XXX的时候表示覆盖默认的同类型对象
@@ -28,6 +25,8 @@ import study.ywork.web.controller.BeanNameTwoController;
 @Configuration
 @EnableWebMvc
 public class BeanConfig {
+    private static final String UTF8 = "UTF-8";
+
     /*
      * 自定义国际化语言配置，该Bean名称就是AbstractApplicationContext.MESSAGE_SOURCE_BEAN_NAME
      * 会覆盖它的实例，看自己的需求而定
@@ -37,7 +36,7 @@ public class BeanConfig {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
         // 为了方便自定义的前缀其实和Hibernate Validator验证器需要的国际化前缀配置一致
         messageSource.setBasenames("ValidationMessages");
-        messageSource.setDefaultEncoding("UTF-8");
+        messageSource.setDefaultEncoding(UTF8);
         return messageSource;
     }
 
@@ -47,24 +46,6 @@ public class BeanConfig {
         SessionLocaleResolver r = new SessionLocaleResolver();
         r.setDefaultLocale(Locale.SIMPLIFIED_CHINESE);
         return r;
-    }
-
-    // 配置上传下载的参数信息
-    @Bean(DispatcherServlet.MULTIPART_RESOLVER_BEAN_NAME)
-    public MultipartResolver getMultipartResolver() {
-        CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver();
-        commonsMultipartResolver.setDefaultEncoding("UTF-8");
-        commonsMultipartResolver.setMaxUploadSize(20000000);
-        commonsMultipartResolver.setResolveLazily(false);
-        return commonsMultipartResolver;
-    }
-
-    // 配置theme的参数信息，支持国际化的配置
-    @Bean(DispatcherServlet.THEME_RESOLVER_BEAN_NAME)
-    public ThemeResolver customThemeResolver() {
-        FixedThemeResolver fixedThemeResolver = new FixedThemeResolver();
-        fixedThemeResolver.setDefaultThemeName("app-theme");
-        return fixedThemeResolver;
     }
 
     /*
@@ -97,7 +78,7 @@ public class BeanConfig {
         // 配合FreeMarker视图解析对象使用
         FreeMarkerConfigurer configurer = new FreeMarkerConfigurer();
         configurer.setTemplateLoaderPath("/WEB-INF/views/");
-        configurer.setDefaultEncoding("UTF-8");
+        configurer.setDefaultEncoding(UTF8);
         return configurer;
     }
 

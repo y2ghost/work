@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 @SpringJUnitWebConfig(CSVConfig.class)
-class CVSControllerTest {
+class CSVControllerTest {
     @Autowired
     private WebApplicationContext wac;
     private MockMvc mockMvc;
@@ -29,24 +29,24 @@ class CVSControllerTest {
     @Test
     void testNewEmployee() throws Exception {
         MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/newEmployee")
-            .contentType("text/csv")
-            .accept(MediaType.TEXT_PLAIN_VALUE)
-            .content(getNewEmployeeListInCsv());
+                .contentType("text/csv")
+                .accept(MediaType.TEXT_PLAIN_VALUE)
+                .content(getNewEmployeeListInCsv());
         this.mockMvc.perform(builder)
-            .andExpect(MockMvcResultMatchers.status().isOk())
-            .andExpect(MockMvcResultMatchers.content().string("size: 3"))
-            .andDo(MockMvcResultHandlers.print());
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("size: 3"))
+                .andDo(MockMvcResultHandlers.print());
     }
 
     @Test
     void testGetEmployeeList() throws Exception {
         MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/employeeList").accept("text/csv");
         this.mockMvc.perform(builder)
-            .andExpect(MockMvcResultMatchers.status().isOk())
-            .andDo(MockMvcResultHandlers.print());
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(MockMvcResultHandlers.print());
     }
 
     private String getNewEmployeeListInCsv() {
-        return "id, name, phoneNumber\n1,yy,123-212-3233\n2,yx,132-232-3111\n" + "3,xy,111-222-3333\n";
+        return "id, name, phoneNumber\n1,yy,123-212-3233\n2,yx,132-232-3111\n3,xy,111-222-3333\n";
     }
 }

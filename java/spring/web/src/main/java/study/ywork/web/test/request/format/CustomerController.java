@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/customers")
 public class CustomerController {
-    private CustomerDataService customerDataService;
+    private final CustomerDataService customerDataService;
 
     public CustomerController(CustomerDataService customerDataService) {
         this.customerDataService = customerDataService;

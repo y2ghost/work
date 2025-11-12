@@ -1,11 +1,12 @@
 package study.ywork.web.test.request.format;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 import java.util.Date;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 public class User {
     private Long id;
@@ -67,6 +68,6 @@ public class User {
     @Override
     public String toString() {
         return "User [id=" + id + ", name=" + name + ", password=" + password + ", emailAddress=" + emailAddress
-            + ", dateOfBirth=" + dateOfBirth + "]";
+                + ", dateOfBirth=" + dateOfBirth + "]";
     }
 }

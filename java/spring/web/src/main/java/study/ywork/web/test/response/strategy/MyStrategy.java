@@ -1,9 +1,9 @@
 package study.ywork.web.test.response.strategy;
 
 import org.springframework.http.MediaType;
-import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.accept.ContentNegotiationStrategy;
 import org.springframework.web.context.request.NativeWebRequest;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,8 +12,7 @@ import java.util.List;
  */
 public class MyStrategy implements ContentNegotiationStrategy {
     @Override
-    public List<MediaType> resolveMediaTypes(NativeWebRequest nativeWebRequest)
-        throws HttpMediaTypeNotAcceptableException {
+    public List<MediaType> resolveMediaTypes(NativeWebRequest nativeWebRequest) {
         List<MediaType> mediaTypes = new ArrayList<>();
         String acceptLang = nativeWebRequest.getHeader("Accept-Language");
 

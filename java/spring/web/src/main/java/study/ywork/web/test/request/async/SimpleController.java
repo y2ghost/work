@@ -3,6 +3,7 @@ package study.ywork.web.test.request.async;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.context.request.async.DeferredResult;
+
 import java.util.concurrent.Callable;
 
 /*
@@ -14,14 +15,11 @@ public class SimpleController {
     @GetMapping("test1")
     public Callable<String> handleTestOne() {
         System.out.println("handleTestOne处理异步请求开始");
-        Callable<String> callable = new Callable<String>() {
-            @Override
-            public String call() throws Exception {
-                System.out.println("异步任务开始");
-                Thread.sleep(2000);
-                System.out.println("异步任务结束");
-                return "test1 async result";
-            }
+        Callable<String> callable = () -> {
+            System.out.println("异步任务开始");
+            Thread.sleep(2000);
+            System.out.println("异步任务结束");
+            return "test1 async result";
         };
 
         System.out.println("处理异步请求结束");

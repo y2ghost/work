@@ -1,6 +1,6 @@
 package study.ywork.web.test.request.path;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import jakarta.servlet.ServletException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.util.NestedServletException;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringJUnitWebConfig(WebConfig.class)
 class UserControllerTest {
@@ -42,11 +43,10 @@ class UserControllerTest {
 
     /**
      * 测试异常的处理器：二义性绑定
-     * 
      */
     @Test
     void testEmployeeControllerController() {
-        assertThrows(NestedServletException.class, () -> {
+        assertThrows(ServletException.class, () -> {
             ResultMatcher ok = MockMvcResultMatchers.status().isOk();
             MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/employees/234");
             this.mockMvc.perform(builder).andExpect(ok);

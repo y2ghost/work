@@ -1,27 +1,23 @@
 package study.ywork.web.controller;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
+
 import java.util.concurrent.Callable;
 
 @RequestMapping("/async")
-@Controller
+@RestController
 public class AsyncController {
     @GetMapping
-    @ResponseBody
     public Callable<String> handleCallable() {
         System.out.println("调用handleCallable开始-线程: " + getThreadName());
-        Callable<String> callable = new Callable<String>() {
-            @Override
-            public String call() throws Exception {
-                System.out.println("handleCallable异步任务开始-线程: " + getThreadName());
-                Thread.sleep(300);
-                System.out.println("handleCallable异步任务结束-线程: " + getThreadName());
-                return "async result";
-            }
+        Callable<String> callable = () -> {
+            System.out.println("handleCallable异步任务开始-线程: " + getThreadName());
+            Thread.sleep(300);
+            System.out.println("handleCallable异步任务结束-线程: " + getThreadName());
+            return "async result";
         };
 
         System.out.println("调用handleCallable结束-线程: " + getThreadName());
@@ -29,7 +25,6 @@ public class AsyncController {
     }
 
     @GetMapping("/deferred")
-    @ResponseBody
     public DeferredResult<String> handleDeferred() {
         System.out.println("调用handleDeferred开始-线程: " + getThreadName());
         final DeferredResult<String> deferredResult = new DeferredResult<>();
@@ -38,8 +33,8 @@ public class AsyncController {
             System.out.println("handleDeferred异步任务开始-线程: " + getThreadName());
             try {
                 Thread.sleep(300);
-            } catch (InterruptedException e) {
-                System.err.println(e);
+            } catch (InterruptedException ex) {
+                System.err.println(ex);
                 Thread.currentThread().interrupt();
             }
 
