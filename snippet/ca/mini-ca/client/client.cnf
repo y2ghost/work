@@ -1,0 +1,20 @@
+[req]
+prompt                  = no
+distinguished_name      = distinguished_name_client_cert
+req_extensions          = v3_client_cert
+
+[distinguished_name_client_cert]
+countryName             = NO
+stateOrProvinceName     = Oslo
+localityName            = Oslo
+organizationName        = TLS Experts
+commonName              = Thor Odinson
+emailAddress            = thor@tls.ydoit.dev
+
+[v3_client_cert]
+subjectAltName = @subject_alt_names
+
+[subject_alt_names]
+email.1 = postmaster@tls.ydoit.dev
+email.2 = hostmaster@tls.ydoit.dev
+

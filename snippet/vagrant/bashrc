@@ -1,0 +1,22 @@
+if [ -f /etc/bashrc ]; then
+    . /etc/bashrc
+fi
+
+# 自定义环境变量，如果已有定义则不做处理
+if [[ -z "$YYPROGS" ]]; then
+    export YYPROGS="$HOME/progs"
+    export MAVEN_HOME="$YYPROGS/maven"
+    export GRADLE_HOME="$YYPROGS/gradle"
+    export CATALINA_HOME="$YYPROGS/tomcat"
+    export PATH="$YYPROGS/bin:$PATH"
+fi
+
+if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]; then
+    PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+fi
+
+export PATH
+export LANG=zh_CN.UTF-8
+
+alias yup='sudo dnf -y upgrade && sudo dnf autoremove && dnf-check'
+

@@ -1,0 +1,4 @@
+users:
+  admin:
+    name: root
+    description: "拥有所有权限"

@@ -1,0 +1,5 @@
+CC := cc
+CFLAGS = -Wall -Werror -g -O2 -DLINUX -D_GNU_SOURCE
+SOURCES := $(shell echo *.c)
+# 匹配通用的临时文件
+TEMPFILES := core core.* *.o temp.* *.out

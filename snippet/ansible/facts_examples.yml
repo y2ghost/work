@@ -1,0 +1,16 @@
+---
+- name: facts信息获取示例
+  hosts: webservers
+  become: yes
+  gather_facts: true
+
+  tasks:
+    - name: 获取服务信息
+      debug:
+        var: ansible_facts
+    - name: 获取服务版本信息
+      debug:
+        var: ansible_facts['distribution']
+    - name: 获取服务IPV4信息
+      debug:
+        var: ansible_facts['all_ipv4_addresses'].0

@@ -1,0 +1,92 @@
+环境搭建
+- ```bash
+- # 安装主机名管理插件
+- vagrant plugin install vagrant-hostmanager
+- # 验证插件安装
+- vagrant plugin list
+- # 启动配置的服务器
+- vagrant up
+- # 查看服务器状态
+- vagrant status
+- ```
+
+环境部署
+- ```bash
+- vagrant ssh amgr
+- # 下面的操作是在虚拟机内部执行
+- sudo dnf install -y python38
+- mkdir ansible
+- cd ansible
+- python3 -m venv avenv
+- source avenv/bin/activate
+- pip3 install -U pip setuptools wheel
+- pip3 install ansible
+- ansible --version
+- ```
+
+PIP源国内镜像配置示例
+- 目的时解决下载国外源速度慢的问题
+- 编辑配置文件$HOME/.pip/pip.conf
+  > ```txt
+  > [global]
+  > index-url=https://mirrors.aliyun.com/pypi/simple
+  > [install]
+  > trusted-host=mirrors.aliyun.com
+  > ```
+
+inventory示例
+- ```bash
+- # 当前目录存在ansible.cfg和inventory配置文件
+- ansible-inventory --graph
+- ansible-inventory -y --list
+- ```
+
+无密码登录配置
+- # 登录amgr虚拟机
+- vagrant ssh amgr
+- # 虚拟机内部执行命令
+- # 检查ansible是否支持SSH
+- ansible-doc -t connection -l | grep ssh
+- ssh-keygen -t rsa
+- hosts="web160 web161 db lb"
+- for host in $hosts; do
+  > ssh-copy-id -i ~/.ssh/id_rsa.pub vagrant@$host -o StrictHostKeyChecking=no -f
+  > done
+
+  ansible操作示例
+  - 列出模块: ansible-doc -l
+  - 模块文档: ansible-doc ping
+  - 执行远程命令
+    > ansible webservers -m command -a "ping www.baidu.com -c 2"
+    > ansible webservers -m ping
+    > ansible webservers -m service -a "state=restarted name=sshd" -b
+    > ansible webservers -m group -a "name=app_users state=present" -b
+
+  ansible-playbook示例
+  - ```
+  - ansible-playbook --syntax-check webserver.yml
+  - ansible-playbook -C webserver.yml
+  - ansible-playbook webserver.yml
+  - ansible-playbook --limit 192.168.3.160 webserver.yml
+  - ansible-playbook vars_examples.yml
+  - ansible-playbook handler_examples.yml
+  - ansible-playbook jinja2_examples.yml
+  - ```
+
+  ansible加解密文件示例
+  - ```bash
+  - ansible-vault encrypt secret_file.yml --output secret_file
+  - ansible-playbook --vault-id @prompt vault_examples.yml
+  - ```
+
+  ansible-facts信息示例
+  - ansible-playbook facts_examples.yml --limit web160
+
+  ansible-tags标签示例
+  - ansible-playbook tag_examples.yml -t info
+
+  ansible-role创建示例
+  - ```bash
+  - # 创建框架目录: ansible-galaxy role init mongodb --init-path ./roles
+  - ansible-playbook db_role_examples.yml.yml -t mongodbserver
+  - ansible-playbook webservers_role_examples.yml -t mongodbclient

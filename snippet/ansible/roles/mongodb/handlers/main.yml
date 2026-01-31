@@ -1,0 +1,6 @@
+---
+- name: restart_mongo_db
+  ansible.builtin.systemd:
+    name: mongod
+    state: restarted
+  tags: [never, mongodbserver]

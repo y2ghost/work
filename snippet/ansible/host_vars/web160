@@ -1,0 +1,4 @@
+packages:
+- httpd
+- python
+- mysql

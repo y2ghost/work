@@ -1,0 +1,28 @@
+plugins {
+    id "java"
+    id "org.springframework.boot"
+    id "io.spring.dependency-management"
+}
+
+repositories {
+    maven { url "https://maven.aliyun.com/repository/public/" }
+}
+
+dependencies {
+    implementation "org.springframework.boot:spring-boot-starter-security"
+    implementation "org.springframework.security:spring-security-ldap"
+    implementation "org.springframework.boot:spring-boot-starter-thymeleaf"
+    implementation "org.springframework.boot:spring-boot-starter-tomcat"
+    implementation "org.springframework.boot:spring-boot-starter-web"
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+group = "study.ywork"
+version = "1.0.0"
+description = "使用ldap作为认证数据库示例"
+sourceCompatibility = "11"
+targetCompatibility = "11"
+

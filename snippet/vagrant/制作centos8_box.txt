@@ -1,0 +1,51 @@
+制作准备
+- 安装virtualbox和vagrant软件
+- 创建虚拟机：名称rocky8、内存2G、CPU2核、磁盘50G
+- 操作系统镜像使用Rocky-8.6-x86_64-minimal.iso
+- 启用第一个网卡，使用网络地址转换NAT，端口映射:本机3333至10.0.2.15:22
+- 安装选择中文语言、亚洲上海时区、最小化安装模式
+- 创建用户: vagrant，配置为管理员
+- root和vagrant用户的密码均为vagrant
+
+安装后的处理(使用vagrant用户登录)
+- ```bash
+- su
+- cat > /etc/sudoers.d/vagrant <<EOF
+  > vagrant ALL=(ALL)   NOPASSWD: ALL
+  > EOF
+- exit
+- # 安装必备软件包
+- sudo dnf install -y unzip zip yum-utils vim tree jq
+- # 拷贝bashrc, ssh, vim, progs到$HOME目录
+- cd $HOME
+- mv bashrc .bashrc
+- mv ssh .ssh
+- chmod 600 $HOME/.ssh/authorized_keys
+- chmod +x $HOME/progs/bin/dnf-check
+- # 退出重新登录，使得配置重新生效，然后更新软件包
+- yup
+- sudo reboot
+- # 重启后，自动删除旧的内核包或是软件包
+- yup
+- sudo reboot
+- # 安装增强功能，挂载virtualbox的光盘ISO
+- sudo dnf install -y libXt libXext libXmu kernel-headers kernel-devel \
+  > elfutils-libelf-devel gcc make python38 bzip2 tar
+- mkdir cdrom && sudo mount /dev/cdrom cdrom
+- cd cdrom && ./VBoxLinuxAdditions.run
+- cd $HOME && sudo umount cdrom
+- rm -rf cdrom
+- rm -f .bash_history .python_history
+- sudo dnf clean all
+- sudo poweroff
+- ```
+
+vagrant打包部署
+- 打包: vagrant package --base rocky8 --output rocky8.box
+- 添加: vagrant box add --name "yy/rocky8" rocky8.box
+- 测试打包的BOX
+  > mkdir test && cd test
+  > vagrant init "yy/rocky8"
+  > vagrant up
+  > vagrant status
+  > vagrant destroy -f

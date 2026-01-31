@@ -1,0 +1,9 @@
+pluginManagement {
+    plugins {
+        id "org.springframework.boot" version "${spring_boot_version}"
+        id "io.spring.dependency-management" version "${spring_deps_version}"
+    }
+}
+
+rootProject.name = "ldap"
+

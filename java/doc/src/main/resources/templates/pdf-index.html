@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org"
+      th:lang="zh" lang="zh">
+<head>
+    <title>PDF示例</title>
+</head>
+<body>
+<h1>导出PDF报告</h1>
+<form action="/pdf-export/export" method="post">
+    <label for="name">你的名字: </label>
+    <input type="text" id="name" name="name" required>
+    <button type="submit">导出报告</button>
+</form>
+</body>
+</html>

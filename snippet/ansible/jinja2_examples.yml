@@ -1,0 +1,13 @@
+---
+- name: jinja2模板示例
+  hosts: load_balancers
+  gather_facts: false
+  vars:
+    - message: "默认测试消息"
+  
+  tasks:
+    - name: jinja2模板生成
+      template:
+        src: webservers.j2
+        dest: /home/vagrant
+

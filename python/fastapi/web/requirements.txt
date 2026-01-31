@@ -1,0 +1,6 @@
+fastapi[all] 
+jinja2
+pydantic
+python-jose
+passlib
+pytest
