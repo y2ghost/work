@@ -1,0 +1,2 @@
+service_name: sshd
+service_description: "sshd服务"
