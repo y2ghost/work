@@ -1,0 +1,9 @@
+galaxy_info:
+  author: yy
+  description: for study
+  company: free
+  license: MIT
+  min_ansible_version: 2.1
+  galaxy_tags: []
+
+dependencies: []

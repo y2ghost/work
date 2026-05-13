@@ -1,0 +1,38 @@
+[versions]
+poi = "5.4.1"
+pdfbox = "3.0.6"
+zip4j = "2.11.5"
+itext = "7.2.6"
+openpdf = "2.0.5"
+saucer = "9.13.3"
+hsqldb = "2.7.4"
+lucene = "9.12.3"
+bc = "1.82"
+commonNet = "3.11.1"
+servlet = "4.0.4"
+ws = "3.1.0"
+
+[libraries]
+poi-poi = { module = "org.apache.poi:poi", version.ref = "poi" }
+poi-ooxml = { module = "org.apache.poi:poi-ooxml", version.ref = "poi" }
+poi-scratchpad = { module = "org.apache.poi:poi-scratchpad", version.ref = "poi" }
+pdfbox-core = { module = "org.apache.pdfbox:pdfbox", version.ref = "pdfbox" }
+pdfbox-xmpbox = { module = "org.apache.pdfbox:xmpbox", version.ref = "pdfbox" }
+pdfbox-preflight = { module = "org.apache.pdfbox:preflight", version.ref = "pdfbox" }
+zip4j = { module = "net.lingala.zip4j:zip4j", version.ref = "zip4j" }
+itext-core = { module = "com.itextpdf:itext7-core", version.ref = "itext" }
+openpdf = { module = "com.github.librepdf:openpdf", version.ref = "openpdf" }
+saucer-pdf = { module = "org.xhtmlrenderer:flying-saucer-pdf", version.ref = "saucer" }
+hsqldb = { module = "org.hsqldb:hsqldb", version.ref = "hsqldb" }
+lucene-core = { module = "org.apache.lucene:lucene-core", version.ref = "lucene" }
+lucene-common = { module = "org.apache.lucene:lucene-analysis-common", version.ref = "lucene" }
+bc-prov = { module = "org.bouncycastle:bcprov-jdk18on", version.ref = "bc" }
+bc-pkix = { module = "org.bouncycastle:bcpkix-jdk18on", version.ref = "bc" }
+commons-net = { module = "commons-net:commons-net", version.ref = "commonNet" }
+servlet-api = { module = "jakarta.servlet:jakarta.servlet-api", version.ref = "servlet" }
+ws-rsapi = { module = "jakarta.ws.rs:jakarta.ws.rs-api", version.ref = "ws" }
+
+[plugins]
+spring-boot = { id = "org.springframework.boot", version = "3.4.5" }
+spring-dependency = { id = "io.spring.dependency-management", version = "1.1.7" }
+

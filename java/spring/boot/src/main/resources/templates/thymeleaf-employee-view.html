@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <style>
+        table.emp-table{width:100%;}
+        table.emp-table td {border:solid 1px #aaa;}
+        table.emp-table th {border:solid 1px #aaa; background: #bbb;}
+    </style>
+</head>
+<body>
+<h3>已有雇员信息</h3>
+<table class="emp-table">
+    <tr>
+        <th>名字</th>
+        <th>部门</th>
+        <th>生日</th>
+    </tr>
+    <tr th:each="employee : ${employees}">
+        <td th:text="${employee.name}"></td>
+        <td th:text="${employee.dept}"></td>
+        <td th:text="${employee.dateOfBirth}"></td>
+    </tr>
+</table>
+</form>
+<br/>
+<a th:href="@{/employee}">添加新雇员</a>
+</body>
+</html>

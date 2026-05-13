@@ -1,0 +1,170 @@
+entity Product {
+    name String required,
+    description String,
+    price BigDecimal required min(0),
+    createTime Instant required,
+    updateTime Instant required
+}
+
+entity GroundStation {
+    name String required unique,
+    host String required,
+    description String,
+    createTime Instant required,
+    updateTime Instant required
+}
+
+entity Device {
+    mac String required unique,
+    name String required unique,
+    host String required,
+    type DeviceType required,
+    description String,
+    createTime Instant required,
+    updateTime Instant required
+}
+
+entity UserBill {
+    amount BigDecimal required min(0),
+    paymentMethod PaymentMethod required,
+    description String,
+    createTime Instant required,
+    updateTime Instant required
+}
+
+entity UserWallet {
+    balance BigDecimal required min(0),
+    createTime Instant required,
+    updateTime Instant required
+}
+
+entity ProductOrder {
+    status OrderStatus required,
+    description String required,
+    code String required,
+    createTime Instant required,
+    updateTime Instant required
+}
+
+entity OrderItem {
+    quantity Integer required min(0),
+    totalPrice BigDecimal required min(0),
+    createTime Instant required,
+    updateTime Instant required
+}
+
+entity Satellite {
+    name String required,
+    syncWord String required,
+    description String,
+    createTime Instant required,
+    updateTime Instant required
+}
+
+entity Authcode {
+    code String required,
+    assigned Boolean,
+    createTime Instant required,
+    updateTime Instant required
+}
+
+entity SatelliteJob {
+    userId Integer required,
+    authcodeId Integer required,
+    satelliteId Integer required,
+    stationId Integer required,
+    cameraType Integer,
+    visionType Integer,
+    quantity Integer,
+    imageResolution Integer,
+    imageFrameFrequency Integer,
+    imageWorkMode Integer,
+    compressionMode Integer,
+    compressionRatio Integer,
+    deviceId Integer,
+    stationLongitude BigDecimal,
+    stationLatitude BigDecimal,
+    observedLongitude BigDecimal,
+    observedLatitude BigDecimal,
+    transferLongitude BigDecimal,
+    transferLatitude BigDecimal,
+    jobMode Integer,
+    transferRate Integer,
+    jobStartTime Integer,
+    jobDeadline Integer,
+    instructionConversion Integer,
+    visionPriority Integer,
+    allowFixTime Boolean,
+    operateStartTime Integer,
+    operateEndTime Integer,
+    createTime Instant required,
+    updateTime Instant required
+}
+
+enum Role {
+    ROLE_ADMIN,
+    ROLE_OPS,
+    ROLE_LOG,
+    ROLE_USER,
+    ROLE_VIP,
+    ROLE_GOV,
+    ROLE_COM
+}
+
+enum DeviceType {
+    USER_DEVICE,
+    PORTABLE_TERMINAL
+}
+
+enum Gender {
+    MALE,
+    FEMALE,
+    SECRET
+}
+
+enum PaymentMethod {
+    BALANCE,
+    ALIPAY,
+    WEIXIN,
+    CASH_ON_DELIVERY
+}
+
+enum OrderStatus {
+    PENDING,
+    COMPLETED,
+    CANCELLED
+}
+
+entity OperationLog {
+    uid Long,
+    operation String required,
+    module String required,
+    mac String required,
+    timestamp Long required,
+    createTime Instant required,
+    updateTime Instant required
+}
+
+entity TleFile {
+    uid Long,
+    fileName String required,
+    createTime Instant required,
+    updateTime Instant required
+}
+
+relationship OneToMany {
+    ProductOrder{orderItem} to OrderItem{order(code) required}
+}
+
+relationship ManyToOne {
+    OrderItem{product(name) required} to Product
+}
+
+relationship ManyToOne {
+    Authcode{satellite(name) required} to Satellite
+}
+
+dto * with mapstruct
+service * with serviceClass
+paginate * with pagination except UserWallet, Company
+

@@ -1,0 +1,24 @@
+plugins {
+    id "java"
+    id "org.springframework.boot"
+    id "io.spring.dependency-management"
+}
+
+repositories {
+    maven { url "https://maven.aliyun.com/repository/public/" }
+}
+
+dependencies {
+    implementation "org.springframework.boot:spring-boot-starter-webflux"
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+group = "study.ywork"
+version = "1.0.0"
+description = "使用spring webflux 技术示例"
+sourceCompatibility = "11"
+targetCompatibility = "11"
+
