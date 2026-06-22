@@ -1,0 +1,56 @@
+plugins {
+    id "java"
+    alias(libs.plugins.spring.boot)
+    alias(libs.plugins.spring.dependency)
+}
+
+group = "study.ywork"
+version = "1.0"
+description = "文档功能示例"
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenLocal()
+    maven { url = "https://maven.aliyun.com/repository/public/" }
+    mavenCentral()
+}
+
+dependencies {
+    implementation(libs.pdfbox.core) {
+        exclude group: "commons-logging", module: "commons-logging"
+    }
+    implementation libs.poi.poi
+    implementation libs.poi.ooxml
+    implementation libs.poi.scratchpad
+    implementation libs.zip4j
+    implementation libs.itext.core
+    implementation libs.saucer.pdf
+    // flying-saucer-pdf-openpdf依赖openpdf
+    // 此处可以省略，示例导入依赖
+    implementation libs.openpdf
+    implementation libs.hsqldb
+    implementation libs.pdfbox.core
+    implementation libs.pdfbox.xmpbox
+    implementation libs.lucene.core
+    implementation libs.lucene.common
+    implementation libs.bc.prov
+    implementation libs.bc.pkix
+    implementation "org.springframework.boot:spring-boot-starter-thymeleaf"
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation libs.pdfbox.preflight
+    testImplementation libs.commons.net
+    testImplementation libs.servlet.api
+    testImplementation libs.ws.rsapi
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher"
+}
+
+tasks.named("test") {
+    useJUnitPlatform()
+}
+

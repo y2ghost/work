@@ -1,0 +1,8 @@
+fastapi[all]
+sqlalchemy
+passlib
+bcrypt
+python-jose[cryptography]
+httpx
+pyotp
+pytest

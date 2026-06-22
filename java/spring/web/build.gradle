@@ -1,0 +1,56 @@
+plugins {
+    id "war"
+    id "java"
+    id "application"
+}
+
+repositories {
+    maven {
+        url = "https://maven.aliyun.com/repository/public/"
+    }
+}
+
+dependencies {
+    implementation "jakarta.annotation:jakarta.annotation-api:2.1.1"
+    implementation "org.springframework:spring-webmvc:${spring_version}"
+    implementation "org.springframework:spring-webflux:${spring_version}"
+    implementation "org.springframework:spring-context-support:${spring_version}"
+    implementation "jakarta.servlet:jakarta.servlet-api:6.1.0"
+    implementation "org.hibernate.validator:hibernate-validator:8.0.3.Final"
+    implementation "com.fasterxml.jackson.core:jackson-databind:2.20.1"
+    implementation "org.yaml:snakeyaml:2.5"
+    implementation "com.opencsv:opencsv:5.11.2"
+    implementation "ch.qos.logback:logback-classic:1.5.20"
+    implementation "org.apache.groovy:groovy-templates:4.0.29"
+    implementation "org.freemarker:freemarker:2.3.34"
+    implementation "com.rometools:rome:1.19.0"
+    implementation "net.lingala.zip4j:zip4j:2.11.5"
+    implementation "org.apache.poi:poi:5.4.1"
+    implementation "org.apache.poi:poi-ooxml:5.4.1"
+    implementation "org.apache.poi:poi-scratchpad:5.4.1"
+    implementation "commons-io:commons-io:2.20.0"
+
+    // 测试依赖配置，去除junit4的所有支持
+    testImplementation "org.hamcrest:hamcrest:3.0"
+    testImplementation "com.jayway.jsonpath:json-path:2.10.0"
+    testImplementation "org.junit.jupiter:junit-jupiter:5.13.4"
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher"
+    testImplementation "org.assertj:assertj-core:3.27.6"
+    testImplementation "org.springframework:spring-test:${spring_version}"
+}
+
+application {
+    mainClass = "study.ywork.web.App"
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+test {
+    useJUnitPlatform()
+}
+
+group = "study.ywork"
+version = "1.0"
+

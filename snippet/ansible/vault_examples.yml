@@ -1,0 +1,18 @@
+---
+- name: 处理加密信息示例
+  hosts: load_balancers
+  become: yes
+  gather_facts: false
+
+  tasks:
+    - name: 加载加密的变量
+      include_vars:
+        file: secret_file
+    - name: 打印加密的变量
+      debug:
+        msg: "{{ password }}"
+    - name: 打印加密的变量-不记录日志
+      debug:
+        msg: "{{ password }}"
+      no_log: true
+

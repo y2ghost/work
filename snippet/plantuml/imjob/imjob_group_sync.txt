@@ -1,0 +1,53 @@
+@startuml
+skinparam handwritten true
+skinparam backgroundColor #EEEBDC
+title 群记录同步
+
+control 会议室JOB as job
+database DB
+boundary 第三方IM服务 as IM
+
+loop 定时任务，每天执行一次
+job->DB: 查询所需信息列表
+
+note left
+使用ticket_request和meeting表联合查询
+查询条件是会议室状态为inuse
+得到[群ID, 事件状态]实体列表
+end note
+
+job<--DB: 返回结果
+loop 对每个群做相同的操作
+
+job->DB: 查询群记录最后创建时间
+note left
+查询群记录最后创建时间
+select max(created_at) from meeting_record
+where meeting_id=${meeting_id}
+end note
+
+job<--DB: 返回结果
+alt 有结果
+job->job: 群记录查询开始时间start使用最后创建时间
+else 无结果
+job->job: 群记录查询开始时间start使用昨天
+end
+
+job->IM: 调用群记录导出接口导出群记录
+note left
+从第三方服务拉取群记录(时间范围[start, 当前时间])
+end note
+job<--IM: 返回结果
+
+job->DB: 将JSON数据转为消息记录插入meeting_recored表
+job<--DB: 返回操作结果
+
+alt 事件状态为[closed,revoked]中的其中一个
+job->IM: 调用第三方接口: 删除IM群
+job<--IM: 返回结果
+job->DB: 更新对应群状态为closed(操作meeting表)
+job<--DB: 返回结果
+end
+end
+end
+@enduml

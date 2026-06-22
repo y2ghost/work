@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+check()
+{
+    sudo dnf -y remove --oldinstallonly --setopt installonly_limit=2 kernel
+    sudo dnf remove --duplicates
+    package-cleanup --problems
+    package-cleanup --orphans
+    package-cleanup --leaves
+}
+
+check
+exit 0
