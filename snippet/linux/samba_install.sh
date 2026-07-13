@@ -1,4 +1,4 @@
-sudo dnf install samba samba-common samba-client
+sudo dnf install -y samba samba-client
 sudo firewall-cmd --permanent --add-port={139/tcp,445/tcp}
 sudo firewall-cmd --reload
 sudo mv /etc/samba/smb.conf /etc/samba/smb.conf.orig
