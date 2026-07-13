@@ -1,5 +1,7 @@
 samba安装
-sudo apt install samba
+sudo apt install samba smbclient winbind
+systemctl status smbd
+systemctl status nmbd
 sudo systemctl stop smbd
 sudo mv /etc/samba/smb.conf /etc/samba/smb.conf.orig
 sudo cp smb.conf  smbshared.conf /etc/samba/
@@ -10,6 +12,9 @@ sudo useradd -d /home/docUser -m docUser
 sudo chown -R docUser:docUser /share
 sudo systemctl restart smbd
 sudo systemctl status smbd
+smbclient -L localhost
+smbclient //localhost/Public
+smbclient //localhost/Documents
 
 nfs安装
 sudo mkdir /exports
