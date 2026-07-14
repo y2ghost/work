@@ -1,0 +1,39 @@
+安装软件
+sudo dnf install bind bind-utils
+sudo systemctl enable named
+sudo systemctl start named
+
+配置示例
+sudo cp /etc/named.conf /etc/named.conf.orig
+- ```配置/etc/named.conf
+options {
+#       listen-on port 53 { 127.0.0.1; };
+#       listen-on-v6 port 53 { ::1; };
+}
+
+zone "ydoit.lan" IN {
+    type master;
+    file "ydoit.lan.db";
+    allow-update { none; };
+    allow-query {any; };
+};
+
+zone "1.168.192.in-addr.arpa" IN {
+     type master;
+     file "ydoit.lan.rev";
+     allow-update { none; };
+    allow-query { any; };
+};
+- ```
+sudo cp ydoit.lan.db /var/named/ydoit.lan.db
+sudo cp ydoit.lan.rev /var/named/ydoit.lan.rev
+
+仅用IPv4(按需配置)
+编辑/etc/sysconfig/named: OPTIONS="-4"
+
+启动服务
+sudo named-checkconf
+sudo named-checkzone ydoit.lan /var/named/ydoit.lan.db
+sudo named-checkzone 192.168.1.136 /var/named/ydoit.lan.rev
+sudo systemctl restart named
+

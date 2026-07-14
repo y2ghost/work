@@ -1,0 +1,20 @@
+$TTL 86400
+@ IN SOA dns-primary.ydoit.lan. admin.ydoit.lan. (
+    2019061800 ;Serial
+    3600 ;Refresh
+    1800 ;Retry
+    604800 ;Expire
+    86400 ;Minimum TTL
+)
+
+;Name Server Information
+@ IN NS dns-primary.ydoit.lan.
+
+;Reverse lookup for Name Server
+136 IN PTR dns-primary.ydoit.lan.
+
+;PTR Record IP address to HostName
+13 IN PTR wiki.ydoit.lan.
+14 IN PTR www.ydoit.lan.
+15 IN PTR devel.ydoit.lan.
+

@@ -18,3 +18,13 @@ sudo dnf install nfs-utils
 mkdir nfs-temp
 sudo mount -t nfs <server>:/exports/temp nfs-temp
 
+/etc/exports配置说明
+每行格式: /share_name client1(permissions) client2(permissions)
+client使用IP地址、CIDR、域名，以及*表示任意客户端
+权限说明: ro(只读) rw(读写)
+
+客户端使用说明
+查看服务的共享目录: showmount –e localhost
+挂载NFS共享目录: sudo mount -t nfs localhost:/exports/temp /mnt/nfs
+永久挂载(/etc/fstab): localhost:/exports/temp /mnt/nfs nfs defaults 0 0
+
