@@ -1,8 +1,13 @@
 sudo dnf install -y samba samba-client
-sudo firewall-cmd --permanent --add-port={139/tcp,445/tcp}
+# sudo firewall-cmd --permanent --add-port={139/tcp,445/tcp}
+sudo firewall-cmd --permanent --add-service=samba
 sudo firewall-cmd --reload
-sudo mv /etc/samba/smb.conf /etc/samba/smb.conf.orig
-sudo cp smb.conf  smbshared.conf /etc/samba/
+sudo cp /etc/samba/smb.conf /etc/samba/smb.conf.orig
+# 更新配置/etc/samba/smb.conf
+# [global]
+#    include = /etc/samba/smbshared.conf
+#    ...
+sudo cp smbshared.conf /etc/samba/
 sudo mkdir /share
 sudo mkdir /share/documents
 sudo mkdir /share/public
@@ -14,5 +19,7 @@ testparm
 sudo systemctl enable smb nmb
 sudo systemctl start smb nmb
 # 测试服务
+# Windows: \\SERVER_IP
+# Linux 或 Mac: smb://SERVER_IP
 smbclient -U docUser -L localhost
 
