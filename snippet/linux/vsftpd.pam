@@ -1,0 +1,7 @@
+#%PAM-1.0
+
+# db参数值会自动追加文件后缀.db
+# 实际查找文件/etc/vsftpd/vsftpd-virtual-user.db
+auth       required     pam_userdb.so db=/etc/vsftpd/vsftpd-virtual-user
+account    required     pam_userdb.so db=/etc/vsftpd/vsftpd-virtual-user
+session    required     pam_loginuid.so

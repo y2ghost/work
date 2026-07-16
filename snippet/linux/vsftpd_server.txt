@@ -1,0 +1,37 @@
+sudo dnf install vsftpd openssl
+sudo systemctl enable vsftpd
+sudo cp /etc/vsftpd/vsftpd.conf /etc/vsftpd/vsftpd.conf.orig
+sudo cp vsftpd.conf /etc/vsftpd/vsftpd.conf
+# CN配置示例ftp.ydoit.cn
+sudo openssl req -x509 -nodes -days 1825 -newkey rsa:2048 \
+    -keyout /etc/vsftpd/vsftpd.key -out /etc/vsftpd/vsftpd.pem
+sudo groupadd nogroup
+sudo useradd --home-dir /home/vsftpd --gid nogroup -m --shell /bin/false vsftpd
+
+cat > vusers.txt << EOF
+dev
+dev123456
+test
+test123456
+EOF
+
+sudo dnf install libdb-utils
+db_load -T -t hash -f vusers.txt vsftpd-virtual-user.db
+rm vusers.txt
+sudo cp vsftpd-virtual-user.db /etc/vsftpd/
+sudo chmod 600 /etc/vsftpd/vsftpd-virtual-user.db
+
+# PAM配置
+sudo cp /etc/pam.d/vsftpd /etc/pam.d/vsftpd.orig
+sudo cp vsftpd.pam /etc/pam.d/vsftpd
+
+# 目录配置
+sudo mkdir -p /opt/ftpData
+sudo chown vsftpd.nogroup /opt/ftpData
+
+# 配置用户目录
+sudo mkdir /etc/vsftpd/vsftpd_user_conf
+echo 'local_root=/opt/ftpData' | sudo tee /etc/vsftpd/vsftpd_user_conf/dev
+echo 'local_root=/opt/ftpData' | sudo tee /etc/vsftpd/vsftpd_user_conf/test
+sudo systemctl restart vsftpd
+
